@@ -7,15 +7,18 @@ export default function Home() {
     [
       {
          title: 'surveys',
-         text: 'have fun'
+         text: 'text-background',
+         image: "bg-[url('./luis.jpg')]"
       },
       {
         title: 'discussion',
-        text: 'nice one'
+        text: 'text-foreground',
+        image: "bg-[url('./sheva.jpg')]"
       },
       {
         title: 'images',
-        text: 'wowza'
+        text: 'text-green-300',
+        image: "bg-[url('./khvicha.jpg')]"
       },
     ]
   const boardsContentMapper = homeBoardsContent.map((board)=>BoardGenerator(board))
