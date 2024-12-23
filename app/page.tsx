@@ -1,10 +1,27 @@
-import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { ModeToggle } from "@/components/ui/ModeToggle";
+import BoardGenerator from "@/components/BoardGenerator";
 
 export default function Home() {
+  let homeBoardsContent = 
+    [
+      {
+         title: 'surveys',
+         text: 'have fun'
+      },
+      {
+        title: 'discussion',
+        text: 'nice one'
+      },
+      {
+        title: 'images',
+        text: 'wowza'
+      },
+    ]
+  const boardsContentMapper = homeBoardsContent.map((board)=>BoardGenerator(board))
+
   return (
-    <div className="bg-background dark:bg-foreground grid grid-rows-[20px_1fr_20px] justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
+    <div className="bg-background dark:bg-foreground justify-items-center min-h-screen sm:p-10 p-5 ">
       <div className="justify-items-center">
         <ModeToggle/>
         <div className="text-foreground dark:text-background m-5">
@@ -15,6 +32,9 @@ export default function Home() {
             </div>
         </div>
         <Button variant={"destructive"}>Sign In</Button>
+      </div>
+      <div>
+        {boardsContentMapper}
       </div>
     </div>
   );
