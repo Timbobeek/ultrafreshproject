@@ -1,5 +1,9 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+## Figma
+
+https://www.figma.com/design/FJKYRzxOlhpGf1ElNZYY50/FutbolSurvey-2.0?node-id=0-1&p=f&t=pye4DPsAFZp1TNJR-0
+
 ## Getting Started
 
 First, run the development server:
