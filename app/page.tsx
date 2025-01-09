@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import BoardGenerator from "@/components/BoardGenerator";
+import { Footer } from "@/components/ui/footer";
 
 export default function Home() {
   let homeBoardsContent = 
@@ -26,7 +27,7 @@ export default function Home() {
   const boardsContentMapper = homeBoardsContent.map((board)=>BoardGenerator(board))
 
   return (
-    <div className="bg-[url('./futbolbackground.jpg')] bg-green-700 bg-center bg-no-repeat bg-cover fixed justify-items-center h-screen w-screen ">
+    <div className="bg-[url('./futbolbackground.jpg')] bg-green-700 bg-center bg-no-repeat bg-cover fixed flex flex-col items-center h-screen w-screen min-h-screen m-0">
       <div className="justify-items-center m-2">
         <div className="text-foreground m-5 justify-items-center">
             <p className="text-large font-bold">Welcome!</p>
@@ -40,6 +41,7 @@ export default function Home() {
       <div className="flex flex-col">
         {boardsContentMapper}
       </div>
+      <Footer/>
     </div>
   );
 }
