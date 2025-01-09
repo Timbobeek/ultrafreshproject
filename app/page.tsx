@@ -8,26 +8,26 @@ export default function Home() {
       {
          title: 'surveys',
          text: 'text-red-200',
-         image: "bg-[url('./luis.jpg')]",
+         image: "bg-[url('./public/ronaldinho.webp')]",
          borderColor: 'border-black'
       },
       {
         title: 'discussion',
         text: 'text-foreground',
-        image: "bg-[url('./sheva.jpg')]",
+        image: "bg-[url('./public/sheva.jpg')]",
         borderColor: 'border-yellow-300'
       },
       {
         title: 'images',
         text: 'text-green-300',
-        image: "bg-[url('./khvicha.jpg')]",
+        image: "bg-[url('./public/khvicha.jpg')]",
         borderColor: 'border-pink-400'
       },
     ]
   const boardsContentMapper = homeBoardsContent.map((board)=>BoardGenerator(board))
 
   return (
-    <div className="bg-[url('./futbolbackground.jpg')] bg-green-700 bg-center bg-no-repeat bg-cover fixed flex flex-col items-center h-screen w-screen min-h-screen m-0">
+    <div className="bg-[url('./public/futbolbackground.jpg')] bg-green-700 bg-center bg-no-repeat bg-cover fixed flex flex-col items-center h-screen w-screen min-h-screen m-0">
       <div className="justify-items-center m-2">
         <div className="text-foreground m-5 justify-items-center">
             <p className="text-large font-bold">Welcome!</p>
