@@ -31,11 +31,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${museoModerno.className} antialiased`}
-      >
-        {children}
-      </body>
+      <head>
+        <script src="https://kit.fontawesome.com/d4ba08446e.js" crossOrigin="anonymous"></script>
+        <body
+          className={`${museoModerno.className} antialiased`}
+        >
+          {children}
+        </body>
+      </head>
     </html>
   );
 }
