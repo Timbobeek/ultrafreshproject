@@ -9,19 +9,19 @@ export default function Home() {
          title: 'surveys',
          text: 'text-red-200',
          image: "bg-[url('./public/ronaldinho.webp')]",
-         borderColor: 'border-black'
+         borderColor: 'border-gray-300'
       },
       {
-        title: 'discussion',
-        text: 'text-foreground',
+        title: 'discussions',
+        text: 'text-orange-600',
         image: "bg-[url('./public/sheva.jpg')]",
-        borderColor: 'border-yellow-300'
+        borderColor: 'border-blue-300'
       },
       {
         title: 'images',
         text: 'text-green-300',
         image: "bg-[url('./public/khvicha.jpg')]",
-        borderColor: 'border-pink-400'
+        borderColor: 'border-pink-300'
       },
     ]
   const boardsContentMapper = homeBoardsContent.map((board)=>BoardGenerator(board))
