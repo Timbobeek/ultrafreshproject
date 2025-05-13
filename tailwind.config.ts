@@ -25,6 +25,10 @@ const config: Config = {
 			},
 			backgroundColor: { // these are not random names, but what they will be responsible for
 				standard: 'rgb(60 60 60)'
+			},
+			backgroundPosition: {
+				start: '0% 80%',
+				finish: '0% 30%'
 			}
   	}
   },
