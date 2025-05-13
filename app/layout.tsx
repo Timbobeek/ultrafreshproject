@@ -1,18 +1,8 @@
 import type { Metadata } from "next";
-import localFont from "next/font/local";
 import "./globals.css";
 import { MuseoModerno } from 'next/font/google'
+import Script from "next/script";
 
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
-});
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
-});
 const museoModerno = MuseoModerno({
   weight: '500',
   subsets: ['latin'],
@@ -32,7 +22,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <script src="https://kit.fontawesome.com/d4ba08446e.js" crossOrigin="anonymous"></script>
+        <Script src="https://kit.fontawesome.com/d4ba08446e.js" crossOrigin="anonymous"></Script>
         <body
           className={`${museoModerno.className} antialiased`}
         >

@@ -3,7 +3,7 @@ import BoardGenerator from "@/components/BoardGenerator";
 import { Footer } from "@/components/ui/footer";
 
 export default function Home() {
-  let homeBoardsContent = 
+  const homeBoardsContent = 
     [
       {
          title: 'surveys',
