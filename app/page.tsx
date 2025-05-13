@@ -7,21 +7,27 @@ export default function Home() {
     [
       {
          title: 'surveys',
-         text: 'text-red-200',
+         text: 'text-black',
          image: "bg-[url('./public/ronaldinho.webp')]",
-         borderColor: 'border-gray-300'
+         borderColor: 'border-gray-300',
+         backgroundColor: 'bg-gray-300/75',
+         hover: ''
       },
       {
         title: 'discussions',
-        text: 'text-orange-600',
+        text: 'text-black',
         image: "bg-[url('./public/sheva.jpg')]",
-        borderColor: 'border-blue-300'
+        borderColor: 'border-blue-300',
+        backgroundColor: 'bg-blue-300/75',
+        hover: ''
       },
       {
         title: 'images',
-        text: 'text-green-300',
+        text: 'text-black',
         image: "bg-[url('./public/khvicha.jpg')]",
-        borderColor: 'border-pink-300'
+        borderColor: 'border-pink-300',
+        backgroundColor: 'bg-pink-300/75',
+        hover: ''
       },
     ]
   const boardsContentMapper = homeBoardsContent.map((board)=>BoardGenerator(board))
@@ -38,7 +44,7 @@ export default function Home() {
         </div>
         <Button variant={"destructive"}>Sign In</Button>
       </div>
-      <div className="flex flex-col">
+      <div className="flex flex-col w-3/6">
         {boardsContentMapper}
       </div>
       <Footer/>
