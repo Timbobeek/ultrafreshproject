@@ -29,7 +29,7 @@ const config: Config = {
 			backgroundPosition: {
 				start: '0% 80%',
 				finish: '0% 30%'
-			}
+			},
   	}
   },
   plugins: [require("tailwindcss-animate")],

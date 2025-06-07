@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { MuseoModerno } from 'next/font/google'
 import Script from "next/script";
+import { Footer } from "@/components/ui/Footer";
+import { Header } from "@/components/ui/Header";
 
 const museoModerno = MuseoModerno({
   weight: '500',
@@ -23,10 +25,9 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <Script src="https://kit.fontawesome.com/d4ba08446e.js" crossOrigin="anonymous"></Script>
-        <body
-          className={`${museoModerno.className} antialiased`}
-        >
+        <body className={`${museoModerno.className} antialiased bg-[url('../public/images/futbolbackground.jpg')] bg-center bg-no-repeat bg-cover h-screen w-screen min-h-screen m-0 flex justify-center`}>
           {children}
+          <Footer/>
         </body>
       </head>
     </html>
