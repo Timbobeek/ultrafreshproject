@@ -1,7 +1,18 @@
+'use client'
 import BoardGenerator from "@/components/BoardGenerator";
-import {PaginationPrevious} from "@/components/ui/Pagination";
+import { useEffect } from "react";
+import { useHeader } from "../context/HeaderContext";
+
 
 export default function Page() {
+
+  const [, setHeader] = useHeader();
+  
+    useEffect(() => {
+      setHeader({title: 'Images', subtext: null, button: false, redirect: '/'});
+    }, [])
+
+
    const homeBoardsContent = 
           [
             {
@@ -44,18 +55,9 @@ export default function Page() {
         const boardsContentMapper = homeBoardsContent.map((board)=>BoardGenerator(board))
    
    return (
-     <div className="flex flex-col h-screen w-1/2">
-       {/* Header fixed at top */}
-       <header className=" text-foreground flex flex-col items-center justify-center m-2">
-         <h1 className="font-bold text-large m-5">Images</h1>
-         <PaginationPrevious title="Back" className="text-large text-foreground" href="/"/>
-       </header>
- 
-       {/* Content fills remaining space and centers content */}
-       <main className="flex-1 flex flex-col justify-center">
+        <div className="flex flex-col">
             {boardsContentMapper}
-       </main>
-     </div>
+         </div>
    )
  }
  

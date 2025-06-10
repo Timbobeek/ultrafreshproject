@@ -1,3 +1,5 @@
+'use client'
+
 import {
    Carousel,
    CarouselContent,
@@ -5,16 +7,20 @@ import {
    CarouselNext,
    CarouselPrevious,
  } from "@/components/ui/carousel"
- import { PaginationPrevious } from "@/components/ui/Pagination"
+ import { useEffect } from "react";
+ import { useHeader } from "@/app/context/HeaderContext";
 
 
 export default function GeneralSurvey(){
+
+    const [, setHeader] = useHeader();
+     
+       useEffect(() => {
+         setHeader({title: 'General Survey', subtext: null, button: false, redirect: '/surveys'});
+       }, [])
+
    return(
-      <div className="flex flex-col w-1/2">
-         <div className="justify-items-center m-2">
-            <p className="text-foreground text-large font-bold m-5">General Survey</p>
-            <PaginationPrevious title="Back" className="text-large text-foreground" href="/surveys"/>
-         </div>
+      <div className="">
          <Carousel className="h-96 bg-background">
          <CarouselContent className="text-foreground">
             <CarouselItem className="">Question #1</CarouselItem>

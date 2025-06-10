@@ -1,8 +1,21 @@
-
+'use client';
 import { Button } from "@/components/ui/Button";
 import BoardGenerator from "@/components/BoardGenerator";
+import { useEffect } from "react";
+import { useHeader } from "./context/HeaderContext";
 
 export default function Home() {
+
+  const [, setHeader] = useHeader();
+
+  useEffect(() => {
+    setHeader({title: 'Welcome!',
+       subtext: "to FutbolSurvey,\na page built to get to know my fellow\n ⚽futbol/soccer/football⚽ enjoyers",
+      button: true,
+      redirect: '/'
+    });
+  }, [])
+
   const homeBoardsContent = 
     [
       {
@@ -36,20 +49,8 @@ export default function Home() {
   const boardsContentMapper = homeBoardsContent.map((board)=>BoardGenerator(board))
 
   return (
-    <div className="flex flex-col w-1/2">
-      <div className="justify-items-center m-2">
-        <div className="text-foreground m-5 justify-items-center">
-            <p className="text-large font-bold">Welcome!</p>
-            <div className="bg-standard bg-opacity-70 text-foreground rounded-lg p-4 w-[500px] flex justify-center text-center text-small">
-              to FutbolSurvey, <br></br> a page built to get to know my fellow{" "}
-              <br></br>&#9917;futbol/soccer/football&#9917; enjoyers
-            </div>
-        </div>
-        <Button variant={"destructive"}>Sign In</Button>
-      </div>
       <div className="flex flex-col">
         {boardsContentMapper}
       </div>
-    </div>
   );
 }

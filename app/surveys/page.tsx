@@ -1,7 +1,14 @@
+'use client';
 import BoardGenerator from "@/components/BoardGenerator";
-import {PaginationPrevious} from "@/components/ui/Pagination";
+import { useEffect } from "react";
+import { useHeader } from "../context/HeaderContext";
 
 export default function Page(){
+    const [, setHeader] = useHeader();
+  
+    useEffect(() => {
+      setHeader({title: 'Surveys', subtext: null, button: false, redirect: '/'});
+    }, [])
    const homeBoardsContent = 
        [
          {
@@ -35,14 +42,8 @@ export default function Page(){
      const boardsContentMapper = homeBoardsContent.map((board)=>BoardGenerator(board))
 
    return (
-      <div className="flex flex-col w-1/2">
-         <div className="justify-items-center m-2">
-            <p className="text-foreground m-5 text-large font-bold">Surveys</p>
-            <PaginationPrevious title="Back" className="text-large text-foreground" href="/"/>
-         </div>
          <div className="flex flex-col">
             {boardsContentMapper}
          </div>
-      </div>
    ) 
 }
