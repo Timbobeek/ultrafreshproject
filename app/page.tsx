@@ -1,5 +1,5 @@
 'use client';
-import { Button } from "@/components/ui/Button";
+
 import BoardGenerator from "@/components/BoardGenerator";
 import { useEffect } from "react";
 import { useHeader } from "./context/HeaderContext";

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { MuseoModerno } from 'next/font/google'
 import Script from "next/script";
-import { Footer } from "@/components/ui/Footer";
+import { Footer } from "@/components/ui/footer";
 import Header from "@/components/ui/Header";
 import { HeaderProvider } from "./context/HeaderContext";
 

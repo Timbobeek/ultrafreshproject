@@ -1,7 +1,7 @@
 'use client';
 
 import { useHeader } from "@/app/context/HeaderContext";
-import { Button } from "./Button";
+import { Button } from "./button";
 import { PaginationPrevious } from "./Pagination";
 
 export default function Header () {
