@@ -1,4 +1,5 @@
 import type { Config } from "tailwindcss";
+import plugin from 'tailwindcss/plugin';
 
 const config: Config = {
     darkMode: ["class"],
@@ -29,9 +30,13 @@ const config: Config = {
 			backgroundPosition: {
 				start: '0% 80%',
 				finish: '0% 30%'
-			}
+			},
   	}
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [require("tailwindcss-animate"), 
+	plugin(({ addVariant }) => {
+      addVariant('hover-hover', '@media (hover: hover) and (pointer: fine)')
+    }),
+  ],
 };
 export default config;
