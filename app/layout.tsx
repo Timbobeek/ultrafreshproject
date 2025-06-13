@@ -10,6 +10,7 @@ const museoModerno = MuseoModerno({
   weight: '500',
   subsets: ['latin'],
   display: 'swap',
+  fallback: ['Arial', 'sans-serif'],
 })
 
 export const metadata: Metadata = {
@@ -25,11 +26,11 @@ export default function RootLayout({
 
 
   return (
-    <html lang="en">
+    <html lang="en" className={museoModerno.className}>
       <head>
         <Script src="https://kit.fontawesome.com/d4ba08446e.js" crossOrigin="anonymous"></Script>
       </head>
-      <body className={` ${museoModerno.className} antialiased bg-[url('../public/images/futbolbackground.jpg')] bg-center bg-no-repeat bg-cover bg-fixed min-h-screen flex flex-col items-center` }>
+      <body className={` bg-[url('../public/images/futbolbackground.jpg')] bg-center bg-no-repeat bg-cover bg-fixed min-h-screen flex flex-col items-center` }>
         <HeaderProvider>
           <Header/>
 
