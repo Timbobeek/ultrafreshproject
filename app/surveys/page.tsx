@@ -27,7 +27,7 @@ export default function Page(){
            borderColor: 'border-rose-300',
            backgroundColor: 'bg-rose-300/75',
            hover: '',
-           link: ''
+           link: '/surveys/injuries'
          },
          {
            title: 'world cups',
