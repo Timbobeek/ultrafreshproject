@@ -17,6 +17,9 @@ import {
 import { ReactNode } from "react";
 import { useEffect } from "react";
 import { useHeader } from "@/app/context/HeaderContext";
+import axios from "axios";
+
+const apiKey = process.env.REACT_APP_API_KEY;
 
 interface WizardProviderProps {
   children: ReactNode;
@@ -54,7 +57,8 @@ type WizardStepProps = {
    clt: string,
    ball: string,
    jabu: string,
-   love: string
+   love: string,
+   userId: string,
  }
  
  type WizardContextType = {
@@ -66,9 +70,13 @@ type WizardStepProps = {
 // Step schemas
 const fullSchema = z.object({
    name: z.string().min(1, "Name is required"),
-   position: z.string().min(1, "Position is required"),
+   position: z.enum(["gk", "df", "mf", "fw"], {
+      errorMap: () => ({ message: "Select a role" })
+   }),
    favplayer: z.string().min(1, "Favorite player is required"),
-   mr: z.string().min(1, "Answer is required"),
+   mr: z.enum(["Messi", "Ronaldo", "Like and respect both", "Dislike both","Don't care"], {
+      errorMap: () => ({ message: "Select a role" })
+   }),
    favclub: z.string().min(1, "Answer is required"),
    natteam: z.string().min(1, "Answer is required"),
    favleague: z.string().min(1, "Answer is required"),
@@ -77,7 +85,7 @@ const fullSchema = z.object({
    wrsmemspec: z.string().min(1, "Answer is required"),
    favmemplr: z.string().min(1, "Answer is required"),
    wrsmemplr: z.string().min(1, "Answer is required"),
-   age: z.string().min(1, "Answer is required"),
+   age: z.coerce.number(),
    why: z.string().min(1, "Answer is required"),
    amateur: z.boolean().optional(),
    hs: z.boolean().optional(),
@@ -90,8 +98,11 @@ const fullSchema = z.object({
    advc: z.string().min(1, "Answer is required"),
    clt: z.string().min(1, "Answer is required"),
    ball: z.string().min(1, "Answer is required"),
-   jabu: z.string().min(1, "Answer is required"),
+   jabu: z.enum(["Trash", "Enjoyable", "No idea"], {
+      errorMap: () => ({ message: "Select one" })
+   }),
    love: z.string().min(1, "Answer is required"),
+   userId: z.string().min(1, "Answer is required"),
  })
  .refine(
    (data) => data.amateur || data.hs || data.acad || data.college || data.semipro || data.pro,
@@ -111,9 +122,9 @@ function WizardProvider({ children }: WizardProviderProps) {
     defaultValues: 
     { 
       name: "",
-      position: "",
+      position: "gk",
       favplayer: "",
-      mr: "", 
+      mr: "Messi", 
       favclub: "",
       natteam: "",
       favleague: "",
@@ -122,7 +133,7 @@ function WizardProvider({ children }: WizardProviderProps) {
       wrsmemspec: "",
       favmemplr: "",
       wrsmemplr: "",
-      age: "",
+      age: undefined,
       why: "",
       amateur: false,
       hs: false,
@@ -135,8 +146,9 @@ function WizardProvider({ children }: WizardProviderProps) {
       advc: "",
       clt: "",
       ball: "",
-      jabu: "",
-      love: ""
+      jabu: "Trash",
+      love: "",
+      userId: "hjkfhjsdhfjkhdsjfhjh"
     },
     mode: "onTouched"
   });
@@ -163,12 +175,24 @@ type StepProps<Name extends keyof WizardData> = {
    name: Name;
    label: string;
    number: number;
+   options: string[];
  };
  
 function Step<Name extends keyof WizardData>({ name, label, number }: StepProps<Name>) {
    const { methods, setStep } = useWizard();
-   const onSubmit = (data: WizardData) => console.log("Final Submit", data);
- 
+   const onSubmit = (data: WizardData) => console.log("json being submitted", JSON.stringify(data));
+   // const onSubmit = (data: WizardData, e: any) => {
+   //    e.preventDefault()
+
+   //    const jsonData = JSON.stringify(data);
+
+
+   //    axios.post('https://ferrata-crud2.builtwithdark.com/v1/surveys/', jsonData, {headers: {'x-api-key': apiKey}})   ///currently get 403
+   //    .then((res) => {
+   //        console.log('sent to space');
+   //    })
+   // } 
+
    return (
      <Form {...methods}>
        <FormField
@@ -281,7 +305,52 @@ function Step<Name extends keyof WizardData>({ name, label, number }: StepProps<
      </Form>
    );
  }
+
+ function StepRadio<Name extends keyof WizardData>({ name, label, number, options }: StepProps<Name>) {
+   const { methods, setStep } = useWizard();
  
+   return (
+     <Form {...methods}>
+       <FormField
+         control={methods.control}
+         name={name}
+         render={({ field }) => (
+           <FormItem>
+             <FormLabel>{label}</FormLabel>
+             <FormControl>
+               <div className="space-y-2">
+                 {options.map((val) => (
+                   <label key={val} className="flex items-center space-x-2">
+                     <input
+                       type="radio"
+                       value={val}
+                       checked={field.value === val}
+                       onChange={() => field.onChange(val)}
+                     />
+                     <span className="capitalize">{val}</span>
+                   </label>
+                 ))}
+               </div>
+             </FormControl>
+             <FormMessage />
+           </FormItem>
+         )}
+       />
+ 
+       <div className="mt-4 flex justify-end">
+         <Button variant="outline" onClick={() => setStep(number-2)}>Back</Button>
+         <Button
+           onClick={async () => {
+             const valid = await methods.trigger("position");
+             if (valid) setStep(number);
+           }}
+         >
+           Next
+         </Button>
+       </div>
+     </Form>
+   );
+ }
 
 export default function WizardPage() {
    const [, setHeader] = useHeader();
@@ -299,6 +368,30 @@ export default function WizardPage() {
          );
        }
 
+       if (content.number === 2) {
+         return (
+           <WizardStep stepIndex={1}>
+             <StepRadio name={content.name} label={content.label} number={content.number} options={content.options} />
+           </WizardStep>
+         );
+       }
+
+       if (content.number === 4) {
+         return (
+           <WizardStep stepIndex={3}>
+             <StepRadio name={content.name} label={content.label} number={content.number} options={content.options}/>
+           </WizardStep>
+         );
+       }
+
+       if (content.number === 21) {
+         return (
+           <WizardStep stepIndex={20}>
+             <StepRadio name={content.name} label={content.label} number={content.number} options={content.options}/>
+           </WizardStep>
+         );
+       }
+
       return(
          <WizardStep stepIndex={content.number - 1}><Step name={content.name} label={content.label} number={content.number} /></WizardStep>
       )
@@ -306,9 +399,9 @@ export default function WizardPage() {
 
    const wizardStepsContent = [
             { name: 'name', label: 'Name', number: 1 },
-            { name: 'position', label: 'Preferred Position', number: 2 },
+            { name: 'position', label: 'Preferred Position', number: 2, options: ['gk','df','md','fw'] },
             { name: 'favplayer', label: 'Favorite Player', number: 3 },
-            { name: 'mr', label: 'Messi or Ronaldo?', number: 4 },
+            { name: 'mr', label: 'Messi or Ronaldo?', number: 4, options: ['Messi','Ronaldo','Like and respect both','Dislike both','Dont care'] },
             { name: 'favclub', label: 'Favorite Club?', number: 5 },
             { name: 'natteam', label: 'Favorite National Team?', number: 6 },
             { name: 'favleague', label: 'Favorite League?', number: 7 },
@@ -325,7 +418,7 @@ export default function WizardPage() {
             { name: 'advc', label: 'Best futbol advice?', number: 18 },
             { name: 'clt', label: 'Favorite pair of cleats?', number: 19 },
             { name: 'ball', label: 'Favorite ball?', number: 20 },
-            { name: 'jabu', label: 'Opinion on Jabulani?', number: 21 },
+            { name: 'jabu', label: 'Opinion on Jabulani?', number: 21,  options: ["Trash", "Enjoyable", "No idea"] },
             { name: 'love', label: 'Best compliment received?', number: 22 },
    ] as const;
    
