@@ -19,7 +19,7 @@ import { useEffect } from "react";
 import { useHeader } from "@/app/context/HeaderContext";
 import axios from "axios";
 
-const apiKey = process.env.REACT_APP_API_KEY;
+const apiKey = process.env.NEXT_PUBLIC_API_KEY;
 
 interface WizardProviderProps {
   children: ReactNode;
@@ -180,18 +180,14 @@ type StepProps<Name extends keyof WizardData> = {
  
 function Step<Name extends keyof WizardData>({ name, label, number }: StepProps<Name>) {
    const { methods, setStep } = useWizard();
-   const onSubmit = (data: WizardData) => console.log("json being submitted", JSON.stringify(data));
-   // const onSubmit = (data: WizardData, e: any) => {
-   //    e.preventDefault()
+   const onSubmit = (data: WizardData, e: any) => {
+      e.preventDefault()
 
-   //    const jsonData = JSON.stringify(data);
-
-
-   //    axios.post('https://ferrata-crud2.builtwithdark.com/v1/surveys/', jsonData, {headers: {'x-api-key': apiKey}})   ///currently get 403
-   //    .then((res) => {
-   //        console.log('sent to space');
-   //    })
-   // } 
+      axios.post('https://ferrata-crud2.builtwithdark.com/v1/surveys/', data, {headers: {'x-api-key': apiKey}})
+      .then((res) => {
+          console.log('sent to space');
+      })
+   } 
 
    return (
      <Form {...methods}>
