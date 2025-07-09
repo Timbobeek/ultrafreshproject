@@ -80,6 +80,29 @@ type StringOrNumberFieldNames = Extract<
   keyof WizardData
 >;
 
+type StringFieldNames = Extract<
+  {
+    [K in keyof WizardData]: WizardData[K] extends string ? K : never;
+  }[keyof WizardData],
+  keyof WizardData
+>;
+
+type StepProps<Name extends StringOrNumberFieldNames> = {
+  name: Name;
+  label: string;
+  number: number;
+  options?: string[];
+};
+
+type WizardStepContent =
+  | { name: keyof WizardData; label: string; number: number }
+  | {
+      name: keyof WizardData;
+      label: string;
+      number: number;
+      options: string[];
+    };
+
 // Step schemas
 const baseSchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -192,29 +215,6 @@ function WizardStep({ stepIndex, children }: WizardStepProps) {
   return step === stepIndex ? <>{children}</> : null;
 }
 
-type StepProps<Name extends StringOrNumberFieldNames> = {
-  name: Name;
-  label: string;
-  number: number;
-  options?: string[];
-};
-
-type StringFieldNames = Extract<
-  {
-    [K in keyof WizardData]: WizardData[K] extends string ? K : never;
-  }[keyof WizardData],
-  keyof WizardData
->;
-
-type WizardStepContent =
-  | { name: keyof WizardData; label: string; number: number }
-  | {
-      name: keyof WizardData;
-      label: string;
-      number: number;
-      options: string[];
-    };
-
 function Step<Name extends StringOrNumberFieldNames>({
   name,
   label,
@@ -273,7 +273,7 @@ function Step<Name extends StringOrNumberFieldNames>({
   );
 }
 
-function StepExperience() {
+function StepCheckbox() {
   const { methods, setStep } = useWizard();
 
   return (
@@ -501,7 +501,7 @@ export default function WizardPage() {
     if (step.number === 15) {
       return (
         <WizardStep stepIndex={14}>
-          <StepExperience />
+          <StepCheckbox />
         </WizardStep>
       );
     }
@@ -539,7 +539,7 @@ export default function WizardPage() {
   }
 
   const wizardStepsContent: readonly WizardStepContent[] = [
-    { name: "name", label: "Name", number: 1 },
+    { name: "name", label: "What is your name?", number: 1 },
     {
       name: "position",
       label: "Preferred Position",
