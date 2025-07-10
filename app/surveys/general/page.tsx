@@ -18,7 +18,7 @@ import { ReactNode } from "react";
 import { useEffect } from "react";
 import { useHeader } from "@/app/context/HeaderContext";
 import axios from "axios";
-import { ZodEnum } from "zod";
+import { ZodEnum, ZodNumber } from "zod";
 
 const apiKey = process.env.NEXT_PUBLIC_API_KEY;
 
@@ -33,7 +33,7 @@ type WizardStepProps = {
 
 type WizardData = {
   name: string;
-  position: "gk" | "df" | "mf" | "fw";
+  position: "Goalkeeper" | "Defender" | "Midfielder" | "Forward";
   favplayer: string;
   mr:
     | "Messi"
@@ -73,40 +73,18 @@ type WizardContextType = {
   methods: UseFormReturn<WizardData>;
 };
 
-type StringOrNumberFieldNames = Extract<
-  {
-    [K in keyof WizardData]: WizardData[K] extends string | number ? K : never;
-  }[keyof WizardData],
-  keyof WizardData
->;
-
-type StringFieldNames = Extract<
-  {
-    [K in keyof WizardData]: WizardData[K] extends string ? K : never;
-  }[keyof WizardData],
-  keyof WizardData
->;
-
-type StepProps<Name extends StringOrNumberFieldNames> = {
+type StepGeneratorProps<Name extends keyof WizardData> = {
   name: Name;
   label: string;
   number: number;
+  type: "string" | "number" | "radio" | "checkbox";
   options?: string[];
+  checkboxFields?: { name: keyof WizardData; label: string }[];
 };
 
-type WizardStepContent =
-  | { name: keyof WizardData; label: string; number: number }
-  | {
-      name: keyof WizardData;
-      label: string;
-      number: number;
-      options: string[];
-    };
-
-// Step schemas
 const baseSchema = z.object({
   name: z.string().min(1, "Name is required"),
-  position: z.enum(["gk", "df", "mf", "fw"], {
+  position: z.enum(["Goalkeeper", "Defender", "Midfielder", "Forward"], {
     errorMap: () => ({ message: "Select a role" }),
   }),
   favplayer: z.string().min(1),
@@ -157,7 +135,6 @@ const fullSchema = baseSchema.refine(
   }
 );
 
-// Wizard Context
 const WizardContext = createContext<WizardContextType | undefined>(undefined);
 
 function WizardProvider({ children }: WizardProviderProps) {
@@ -166,7 +143,7 @@ function WizardProvider({ children }: WizardProviderProps) {
     resolver: zodResolver(fullSchema),
     defaultValues: {
       name: "",
-      position: "gk",
+      position: "Goalkeeper",
       favplayer: "",
       mr: "Messi",
       favclub: "",
@@ -215,53 +192,151 @@ function WizardStep({ stepIndex, children }: WizardStepProps) {
   return step === stepIndex ? <>{children}</> : null;
 }
 
-function Step<Name extends StringOrNumberFieldNames>({
+export function StepGenerator<Name extends keyof WizardData>({
   name,
   label,
   number,
-}: StepProps<Name>) {
+  type,
+  options,
+  checkboxFields,
+}: StepGeneratorProps<Name>) {
   const { methods, setStep } = useWizard();
-  const onSubmit = (data: WizardData, e: any) => {
-    e.preventDefault();
 
-    axios
-      .post("https://ferrata-crud2.builtwithdark.com/v1/surveys/", data, {
-        headers: { "x-api-key": apiKey },
-      })
-      .then((res) => {
-        console.log("sent to space");
-      });
+  const goBack = () => setStep(number - 2);
+
+  const renderInput = () => {
+    switch (type) {
+      case "radio":
+        return (
+          <FormField
+            name={name}
+            control={methods.control}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-black">{label}</FormLabel>
+                <FormControl>
+                  <div className="space-y-2">
+                    {options?.map((val) => (
+                      <label key={val} className="flex items-center space-x-2">
+                        <input
+                          type="radio"
+                          value={val}
+                          checked={field.value === val}
+                          onChange={() => field.onChange(val)}
+                        />
+                        <span className="capitalize">{val}</span>
+                      </label>
+                    ))}
+                  </div>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        );
+
+      case "checkbox":
+        return (
+          <FormField
+            name="amateur"
+            control={methods.control}
+            render={({ fieldState }) => (
+              <FormItem>
+                <FormLabel className="text-black">{label}</FormLabel>
+                <div className="space-y-2">
+                  {checkboxFields?.map((cb) => (
+                    <FormField
+                      key={cb.name}
+                      name={cb.name}
+                      control={methods.control}
+                      render={({ field }) => (
+                        <FormItem className="flex items-center gap-2">
+                          <input
+                            type="checkbox"
+                            name={field.name}
+                            ref={field.ref}
+                            checked={field.value}
+                            onChange={(e) => {
+                              field.onChange(e);
+                              methods.trigger("amateur");
+                            }}
+                            onBlur={field.onBlur}
+                          />
+                          <label htmlFor={field.name}>{cb.label}</label>
+                        </FormItem>
+                      )}
+                    />
+                  ))}
+                </div>
+                {fieldState.error && (
+                  <p className="text-sm text-red-500">
+                    {fieldState.error.message}
+                  </p>
+                )}
+              </FormItem>
+            )}
+          />
+        );
+
+      default:
+        return (
+          <FormField
+            name={name}
+            control={methods.control}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-black">{label}</FormLabel>
+                <FormControl>
+                  <Input
+                    {...field}
+                    type={type === "number" ? "number" : "text"}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        );
+    }
   };
+
+  const isCheckboxStep = type === "checkbox";
+  const fieldsToTrigger = isCheckboxStep
+    ? checkboxFields?.map((cb) => cb.name) ?? []
+    : [name];
 
   return (
     <Form {...methods}>
-      <FormField
-        control={methods.control}
-        name={name}
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel>{label}</FormLabel>
-            <FormControl>
-              <Input {...field} />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
-      <div className="mt-4 flex justify-end">
+      {renderInput()}
+
+      <div className="mt-4 flex justify-end space-x-2">
         {number !== 1 && (
-          <Button variant="outline" onClick={() => setStep(number - 2)}>
+          <Button variant="outline" onClick={goBack}>
             Back
           </Button>
         )}
         {number === 22 ? (
-          <Button type="button" onClick={methods.handleSubmit(onSubmit)}>
+          <Button
+            type="button"
+            onClick={methods.handleSubmit((data, e) => {
+              // e?.preventDefault();
+              // axios.post(
+              //   "https://ferrata-crud2.builtwithdark.com/v1/surveys/",
+              //   data,
+              //   {
+              //     headers: { "x-api-key": apiKey },
+              //   }
+              // );
+              console.log("submitted", data);
+            })}
+          >
             Submit
           </Button>
         ) : (
           <Button
+            type="button"
             onClick={async () => {
-              const valid = await methods.trigger([name]);
+              const valid = await methods.trigger(fieldsToTrigger);
               if (valid) setStep(number);
             }}
           >
@@ -273,214 +348,7 @@ function Step<Name extends StringOrNumberFieldNames>({
   );
 }
 
-function StepCheckbox() {
-  const { methods, setStep } = useWizard();
-
-  return (
-    <Form {...methods}>
-      <FormField
-        name="amateur"
-        control={methods.control}
-        render={({ field }) => (
-          <FormItem>
-            <label>
-              <input
-                type="checkbox"
-                name={field.name}
-                ref={field.ref}
-                checked={field.value}
-                onChange={field.onChange}
-                onBlur={field.onBlur}
-              />{" "}
-              Amateur
-            </label>
-          </FormItem>
-        )}
-      />
-      <FormField
-        name="hs"
-        control={methods.control}
-        render={({ field }) => (
-          <FormItem>
-            <label>
-              <input
-                type="checkbox"
-                name={field.name}
-                ref={field.ref}
-                checked={field.value}
-                onChange={field.onChange}
-                onBlur={field.onBlur}
-              />{" "}
-              High School
-            </label>
-          </FormItem>
-        )}
-      />
-      <FormField
-        name="acad"
-        control={methods.control}
-        render={({ field }) => (
-          <FormItem>
-            <label>
-              <input
-                type="checkbox"
-                name={field.name}
-                ref={field.ref}
-                checked={field.value}
-                onChange={field.onChange}
-                onBlur={field.onBlur}
-              />{" "}
-              Academy
-            </label>
-          </FormItem>
-        )}
-      />
-      <FormField
-        name="college"
-        control={methods.control}
-        render={({ field }) => (
-          <FormItem>
-            <label>
-              <input
-                type="checkbox"
-                name={field.name}
-                ref={field.ref}
-                checked={field.value}
-                onChange={field.onChange}
-                onBlur={field.onBlur}
-              />{" "}
-              College
-            </label>
-          </FormItem>
-        )}
-      />
-      <FormField
-        name="semipro"
-        control={methods.control}
-        render={({ field }) => (
-          <FormItem>
-            <label>
-              <input
-                type="checkbox"
-                name={field.name}
-                ref={field.ref}
-                checked={field.value}
-                onChange={field.onChange}
-                onBlur={field.onBlur}
-              />{" "}
-              Semi-Pro
-            </label>
-          </FormItem>
-        )}
-      />
-      <FormField
-        name="pro"
-        control={methods.control}
-        render={({ field }) => (
-          <FormItem>
-            <label>
-              <input
-                type="checkbox"
-                name={field.name}
-                ref={field.ref}
-                checked={field.value}
-                onChange={field.onChange}
-                onBlur={field.onBlur}
-              />{" "}
-              Pro
-            </label>
-          </FormItem>
-        )}
-      />
-
-      {methods.formState.errors.amateur && (
-        <p className="text-red-500 text-sm">
-          {methods.formState.errors.amateur.message}
-        </p>
-      )}
-
-      <div className="mt-4 flex justify-end">
-        <Button variant="outline" onClick={() => setStep(13)}>
-          Back
-        </Button>
-        <Button
-          onClick={async () => {
-            const valid = await methods.trigger([
-              "amateur",
-              "hs",
-              "acad",
-              "college",
-              "semipro",
-              "pro",
-            ]);
-            if (valid) setStep(15); // assuming next step is 15
-          }}
-        >
-          Next
-        </Button>
-      </div>
-    </Form>
-  );
-}
-
-function StepRadio<Name extends StringFieldNames>({
-  name,
-  label,
-  number,
-  options,
-}: StepProps<Name>) {
-  const { methods, setStep } = useWizard();
-
-  return (
-    <Form {...methods}>
-      <FormField
-        control={methods.control}
-        name={name}
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel>{label}</FormLabel>
-            <FormControl>
-              <div className="space-y-2">
-                {options !== undefined ? (
-                  options.map((val) => (
-                    <label key={val} className="flex items-center space-x-2">
-                      <input
-                        type="radio"
-                        value={val}
-                        checked={field.value === val}
-                        onChange={() => field.onChange(val)}
-                      />
-                      <span className="capitalize">{val}</span>
-                    </label>
-                  ))
-                ) : (
-                  <></>
-                )}
-              </div>
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
-
-      <div className="mt-4 flex justify-end">
-        <Button variant="outline" onClick={() => setStep(number - 2)}>
-          Back
-        </Button>
-        <Button
-          onClick={async () => {
-            const valid = await methods.trigger("position");
-            if (valid) setStep(number);
-          }}
-        >
-          Next
-        </Button>
-      </div>
-    </Form>
-  );
-}
-
-export default function WizardPage() {
+export default function GeneralSurveyPage() {
   const [, setHeader] = useHeader();
 
   useEffect(() => {
@@ -492,59 +360,21 @@ export default function WizardPage() {
     });
   }, []);
 
-  function StepsGenerator(step: {
+  const wizardStepsContent: {
     name: keyof WizardData;
     label: string;
     number: number;
     options?: string[];
-  }) {
-    if (step.number === 15) {
-      return (
-        <WizardStep stepIndex={14}>
-          <StepCheckbox />
-        </WizardStep>
-      );
-    }
-
-    if (
-      step.options &&
-      Object.prototype.hasOwnProperty.call(baseSchema.shape, step.name)
-    ) {
-      const fieldSchema =
-        baseSchema.shape[step.name as keyof typeof baseSchema.shape];
-
-      if (fieldSchema instanceof ZodEnum) {
-        return (
-          <WizardStep stepIndex={step.number - 1}>
-            <StepRadio
-              name={step.name as StringFieldNames}
-              label={step.label}
-              number={step.number}
-              options={step.options}
-            />
-          </WizardStep>
-        );
-      }
-    }
-
-    return (
-      <WizardStep stepIndex={step.number - 1}>
-        <Step
-          name={step.name as StringOrNumberFieldNames}
-          label={step.label}
-          number={step.number}
-        />
-      </WizardStep>
-    );
-  }
-
-  const wizardStepsContent: readonly WizardStepContent[] = [
+    type?: "string" | "number" | "radio" | "checkbox";
+    checkboxFields?: { name: keyof WizardData; label: string }[];
+  }[] = [
     { name: "name", label: "What is your name?", number: 1 },
     {
       name: "position",
       label: "Preferred Position",
       number: 2,
-      options: ["gk", "df", "md", "fw"],
+      options: ["Goalkeeper", "Defender", "Midfielder", "Forward"],
+      type: "radio",
     },
     { name: "favplayer", label: "Favorite Player", number: 3 },
     {
@@ -556,8 +386,9 @@ export default function WizardPage() {
         "Ronaldo",
         "Like and respect both",
         "Dislike both",
-        "Dont care",
+        "Don't care",
       ],
+      type: "radio",
     },
     { name: "favclub", label: "Favorite Club?", number: 5 },
     { name: "natteam", label: "Favorite National Team?", number: 6 },
@@ -569,8 +400,21 @@ export default function WizardPage() {
     { name: "wrsmemplr", label: "Worst Memory as a player?", number: 12 },
     { name: "age", label: "When did you start playing?", number: 13 },
     { name: "why", label: "Why did you start playing?", number: 14 },
-    { name: "amateur", label: "Experience Level", number: 15 },
-    { name: "achv", label: "Biggest achivement?", number: 16 },
+    {
+      name: "amateur",
+      label: "Experience Level",
+      number: 15,
+      type: "checkbox",
+      checkboxFields: [
+        { name: "amateur", label: "Amateur" },
+        { name: "hs", label: "High School" },
+        { name: "acad", label: "Academy" },
+        { name: "college", label: "College" },
+        { name: "semipro", label: "Semi-Pro" },
+        { name: "pro", label: "Pro" },
+      ],
+    },
+    { name: "achv", label: "Biggest achievement?", number: 16 },
     { name: "goals", label: "Any futbol-related goals?", number: 17 },
     { name: "advc", label: "Best futbol advice?", number: 18 },
     { name: "clt", label: "Favorite pair of cleats?", number: 19 },
@@ -580,22 +424,42 @@ export default function WizardPage() {
       label: "Opinion on Jabulani?",
       number: 21,
       options: ["Trash", "Enjoyable", "No idea"],
+      type: "radio",
     },
     { name: "love", label: "Best compliment received?", number: 22 },
-  ] as const satisfies readonly {
-    name: Exclude<keyof WizardData, boolean>; // ✅ exclude checkboxes here
-    label: string;
-    number: number;
-    options?: string[];
-  }[];
+  ];
 
-  const stepsContentMapper = wizardStepsContent.map((step) =>
-    StepsGenerator(step)
-  );
+  const stepsContentMapper = wizardStepsContent.map((step) => {
+    const fieldSchema =
+      baseSchema.shape[step.name as keyof typeof baseSchema.shape];
+
+    let type: "string" | "number" | "radio" | "checkbox" = "string";
+
+    if (step.type) {
+      type = step.type;
+    } else if (step.options && fieldSchema instanceof ZodEnum) {
+      type = "radio";
+    } else if (fieldSchema instanceof ZodNumber) {
+      type = "number";
+    }
+
+    return (
+      <WizardStep key={step.number} stepIndex={step.number - 1}>
+        <StepGenerator
+          name={step.name}
+          label={step.label}
+          number={step.number}
+          type={type}
+          options={step.options}
+          checkboxFields={step.checkboxFields}
+        />
+      </WizardStep>
+    );
+  });
 
   return (
     <div className="flex flex-col items-center">
-      <div className="max-w-md mx-auto mt-10 p-6 border rounded-xl shadow-xl bg-foreground">
+      <div className="max-w-Midfielder mx-auto mt-10 p-6 border rounded-xl shadow-xl bg-foreground">
         <WizardProvider>{stepsContentMapper}</WizardProvider>
       </div>
     </div>
