@@ -235,48 +235,48 @@ export function StepGenerator<Name extends keyof WizardData>({
           />
         );
 
-      case "checkbox":
-        return (
-          <FormField
-            name="amateur"
-            control={methods.control}
-            render={({ fieldState }) => (
-              <FormItem>
-                <FormLabel className="text-black">{label}</FormLabel>
-                <div className="space-y-2">
-                  {checkboxFields?.map((cb) => (
-                    <FormField
-                      key={cb.name}
-                      name={cb.name}
-                      control={methods.control}
-                      render={({ field }) => (
-                        <FormItem className="flex items-center gap-2">
-                          <input
-                            type="checkbox"
-                            name={field.name}
-                            ref={field.ref}
-                            checked={field.value}
-                            onChange={(e) => {
-                              field.onChange(e);
-                              methods.trigger("amateur");
-                            }}
-                            onBlur={field.onBlur}
-                          />
-                          <label htmlFor={field.name}>{cb.label}</label>
-                        </FormItem>
-                      )}
-                    />
-                  ))}
-                </div>
-                {fieldState.error && (
-                  <p className="text-sm text-red-500">
-                    {fieldState.error.message}
-                  </p>
-                )}
-              </FormItem>
-            )}
-          />
-        );
+        case "checkbox":
+          return (
+            <FormField
+              name={name}
+              control={methods.control}
+              render={({ fieldState }) => (
+                <FormItem>
+                  <FormLabel className="text-black">{label}</FormLabel>
+                  <div className="space-y-2">
+                    {checkboxFields?.map((cb) => (
+                      <FormField
+                        key={cb.name}
+                        name={cb.name}
+                        control={methods.control}
+                        render={({ field }) => (
+                          <FormItem className="flex items-center gap-2">
+                            <input
+                              type="checkbox"
+                              name={field.name}
+                              ref={field.ref}
+                              checked={field.value}
+                              onChange={(e) => {
+                                field.onChange(e);
+                                methods.trigger(fieldsToTrigger);
+                              }}
+                              onBlur={field.onBlur}
+                            />
+                            <label htmlFor={field.name}>{cb.label}</label>
+                          </FormItem>
+                        )}
+                      />
+                    ))}
+                  </div>
+                  {fieldState.error && (
+                    <p className="text-sm text-red-500">
+                      {fieldState.error.message}
+                    </p>
+                  )}
+                </FormItem>
+              )}
+            />
+          );
 
       default:
         return (
