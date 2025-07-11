@@ -31,7 +31,7 @@ type WizardStepProps = {
   children: ReactNode;
 };
 
-type WizardData = {
+export type WizardData = { //individual to each survey page
   name: string;
   position: "Goalkeeper" | "Defender" | "Midfielder" | "Forward";
   favplayer: string;
@@ -315,7 +315,7 @@ export function StepGenerator<Name extends keyof WizardData>({
             Back
           </Button>
         )}
-        {number === 22 ? (
+        {number === 22 ? ( // 22 should be wizardStepsContent.length, so its dynamic
           <Button
             type="button"
             onClick={methods.handleSubmit((data, e) => {
