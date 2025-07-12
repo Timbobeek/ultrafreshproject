@@ -1,7 +1,7 @@
 import { createContext, useContext, useState } from "react";
-import { FormProvider, useForm, UseFormReturn } from "react-hook-form";
+import { FormProvider, UseFormReturn, FieldValues } from "react-hook-form";
 
-type WizardContextType<T> = {
+type WizardContextType<T extends FieldValues> = {
   step: number;
   setStep: React.Dispatch<React.SetStateAction<number>>;
   methods: UseFormReturn<T>;
@@ -9,7 +9,13 @@ type WizardContextType<T> = {
 
 const WizardContext = createContext<WizardContextType<any> | undefined>(undefined);
 
-export function WizardProvider<T>({ children, methods }: { children: React.ReactNode; methods: UseFormReturn<T> }) {
+export function WizardProvider<T extends FieldValues>({
+  children,
+  methods,
+}: {
+  children: React.ReactNode;
+  methods: UseFormReturn<T>;
+}) {
   const [step, setStep] = useState(0);
 
   return (
@@ -19,8 +25,9 @@ export function WizardProvider<T>({ children, methods }: { children: React.React
   );
 }
 
-export function useWizard<T>() {
+export function useWizard<T extends FieldValues>() {
   const ctx = useContext(WizardContext);
   if (!ctx) throw new Error("useWizard must be used within WizardProvider");
   return ctx as WizardContextType<T>;
 }
+

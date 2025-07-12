@@ -2,8 +2,9 @@ import { FormField, FormItem, FormLabel, FormControl, FormMessage, Form } from "
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useWizard } from "./WizardContext";
-import { UseFormReturn, FieldValues } from "react-hook-form";
+import { FieldValues } from "react-hook-form";
 import React from "react";
+import { Path } from "react-hook-form";
 
 type CheckboxField<T extends FieldValues> = {
   name: keyof T;
@@ -18,7 +19,7 @@ export type StepGeneratorProps<T extends FieldValues, Name extends keyof T> = {
   options?: string[];
   checkboxFields?: CheckboxField<T>[];
   isFinalStep?: boolean;
-  onSubmit?: (data: T, e: React.BaseSyntheticEvent) => void;
+  onSubmit?: (data: T, e?: React.BaseSyntheticEvent) => void;
 };
 
 export function StepGenerator<T extends FieldValues, Name extends keyof T>({
@@ -36,16 +37,18 @@ export function StepGenerator<T extends FieldValues, Name extends keyof T>({
   const goBack = () => setStep(number - 2);
 
   const isCheckboxStep = type === "checkbox";
-  const fieldsToTrigger = isCheckboxStep
-    ? checkboxFields?.map((cb) => cb.name) ?? []
-    : [name];
+  const fieldsToTrigger: Path<T>[] = isCheckboxStep
+  ? checkboxFields?.map((cb) => cb.name as unknown as Path<T>) ?? []
+  : [name as unknown as Path<T>];
+
+
 
   const renderInput = () => {
     switch (type) {
       case "radio":
         return (
           <FormField
-            name={name as string}
+          name={name as unknown as Path<T>}
             control={methods.control}
             render={({ field }) => (
               <FormItem>
@@ -74,7 +77,7 @@ export function StepGenerator<T extends FieldValues, Name extends keyof T>({
       case "checkbox":
         return (
           <FormField
-            name={name as string}
+          name={name as unknown as Path<T>}
             control={methods.control}
             render={({ fieldState }) => (
               <FormItem>
@@ -83,7 +86,7 @@ export function StepGenerator<T extends FieldValues, Name extends keyof T>({
                   {checkboxFields?.map((cb) => (
                     <FormField
                       key={cb.name as string}
-                      name={cb.name as string}
+                      name={cb.name as unknown as Path<T>}
                       control={methods.control}
                       render={({ field }) => (
                         <FormItem className="flex items-center gap-2">
@@ -117,7 +120,7 @@ export function StepGenerator<T extends FieldValues, Name extends keyof T>({
       default:
         return (
           <FormField
-            name={name as string}
+          name={name as unknown as Path<T>}
             control={methods.control}
             render={({ field }) => (
               <FormItem>
@@ -146,17 +149,15 @@ export function StepGenerator<T extends FieldValues, Name extends keyof T>({
           </Button>
         )}
         {isFinalStep ? (
-          <Button
-          type="submit"
-          onClick={(e) => {
-            e.preventDefault(); // optional safety
-            methods.handleSubmit((data) => {
-              onSubmit?.(data, e);
-            })(e);
-          }}
-        >
-          Submit
-        </Button>
+         <Button
+         type="submit"
+         onClick={methods.handleSubmit((data, e) => {
+           onSubmit?.(data, e);
+         })}
+       >
+         Submit
+       </Button>
+       
         
         ) : (
           <Button

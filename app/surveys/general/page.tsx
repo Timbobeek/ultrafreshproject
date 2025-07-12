@@ -58,7 +58,7 @@ const baseSchema = z.object({
   wrsmemspec: z.string().min(1),
   favmemplr: z.string().min(1),
   wrsmemplr: z.string().min(1),
-  age: z.coerce.number(),
+  age: z.coerce.number().min(1),
   why: z.string().min(1),
   amateur: z.boolean().optional(),
   hs: z.boolean().optional(),
