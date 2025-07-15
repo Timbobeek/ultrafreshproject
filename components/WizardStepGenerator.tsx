@@ -5,6 +5,9 @@ import { useWizard } from "./WizardContext";
 import { FieldValues } from "react-hook-form";
 import React from "react";
 import { Path } from "react-hook-form";
+import { StaticImageData } from "next/image";
+import Image from "next/image";
+
 
 type CheckboxField<T extends FieldValues> = {
   name: keyof T;
@@ -12,6 +15,7 @@ type CheckboxField<T extends FieldValues> = {
 };
 
 export type StepGeneratorProps<T extends FieldValues, Name extends keyof T> = {
+  image: StaticImageData;
   name: Name;
   label: string;
   number: number;
@@ -24,6 +28,7 @@ export type StepGeneratorProps<T extends FieldValues, Name extends keyof T> = {
 
 export function StepGenerator<T extends FieldValues, Name extends keyof T>({
   name,
+  image,
   label,
   number,
   type,
@@ -52,6 +57,7 @@ export function StepGenerator<T extends FieldValues, Name extends keyof T>({
             control={methods.control}
             render={({ field }) => (
               <FormItem>
+                <Image src={image} alt="some image"/>
                 <FormLabel className="!text-medium">{label}</FormLabel>
                 <FormControl>
                   <div className="space-y-2">
@@ -81,6 +87,7 @@ export function StepGenerator<T extends FieldValues, Name extends keyof T>({
             control={methods.control}
             render={({ fieldState }) => (
               <FormItem>
+                <Image src={image} alt="some image"/>
                 <FormLabel className="!text-medium">{label}</FormLabel>
                 <div className="space-y-2">
                   {checkboxFields?.map((cb) => (
@@ -124,6 +131,7 @@ export function StepGenerator<T extends FieldValues, Name extends keyof T>({
             control={methods.control}
             render={({ field }) => (
               <FormItem>
+                <Image src={image} alt="some image"/>
                 <FormLabel className="!text-medium text-background">{label}</FormLabel>
                 <FormControl>
                   <Input

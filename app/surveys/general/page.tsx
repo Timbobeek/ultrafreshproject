@@ -10,6 +10,32 @@ import { StepGenerator } from "@/components/WizardStepGenerator";
 import { WizardStep } from "@/components/WizardStep";
 import { useHeader } from "../../context/HeaderContext";
 import axios from 'axios';
+import { StaticImageData } from "next/image";
+
+import stepOne from '../../../public/generalSurvey/vennegor.jpg';
+import stepTwo from '../../../public/generalSurvey/Soccer-Formation~.png';
+import stepThree from '../../../public/generalSurvey/ronaldogaucho.jpg';
+import stepFour from '../../../public/generalSurvey/Messi-&-Ronaldo.png';
+import stepFive from '../../../public/generalSurvey/morecambe.jpg';
+import stepSix from '../../../public/generalSurvey/usmnt~.jpg';
+import stepSeven from '../../../public/generalSurvey/premCrop2.jpg';
+import stepEight from '../../../public/generalSurvey/collection.webp';
+import stepNine from '../../../public/generalSurvey/liverpool.avif';
+import stepTen from '../../../public/generalSurvey/brazilgermany.jpg';
+import stepEleven from '../../../public/generalSurvey/hawklooongCrop.jpg';
+import stepTwelve from '../../../public/generalSurvey/urnpublinjury.webp';
+import stepThirteen from '../../../public/generalSurvey/kids~.jpg';
+import stepFourteen from '../../../public/generalSurvey/son.jpg';
+import stepFifteen from '../../../public/generalSurvey/pyramid2.png';
+import stepSixteen from '../../../public/generalSurvey/worldcup.webp';
+import stepSeventeen from '../../../public/generalSurvey/conference.jpg';
+import stepEighteen from '../../../public/generalSurvey/advice.webp';
+import stepNineteen from '../../../public/generalSurvey/nike-total-90-laser-i-remake-boots-9.jpg';
+import stepTwenty from '../../../public/generalSurvey/brazuca.jpg';
+import stepTwentyOne from '../../../public/generalSurvey/jabulani.avif';
+import stepTwentyTwo from '../../../public/generalSurvey/klopp.jpg';
+
+
 
 const apiKey = process.env.NEXT_PUBLIC_API_KEY;
 
@@ -86,6 +112,7 @@ const fullSchema = baseSchema.refine(
 );
 
 const wizardStepsContent: {
+  image: StaticImageData;
   name: keyof WizardData;
   label: string;
   number: number;
@@ -93,34 +120,34 @@ const wizardStepsContent: {
   type?: "string" | "number" | "radio" | "checkbox";
   checkboxFields?: { name: keyof WizardData; label: string }[];
 }[] = [
-  { name: "name", label: "What is your name?", number: 1 },
+  { image: stepOne, name: "name", label: "What is your name?", number: 1 },
   {
-    name: "position",
+    image: stepTwo, name: "position",
     label: "Preferred Position",
     number: 2,
     options: ["Goalkeeper", "Defender", "Midfielder", "Forward"],
     type: "radio",
   },
-  { name: "favplayer", label: "Favorite Player", number: 3 },
+  { image: stepThree, name: "favplayer", label: "Favorite Player", number: 3 },
   {
-    name: "mr",
+    image: stepFour, name: "mr",
     label: "Messi or Ronaldo?",
     number: 4,
     options: ["Messi", "Ronaldo", "Like and respect both", "Dislike both", "Don't care"],
     type: "radio",
   },
-  { name: "favclub", label: "Favorite Club?", number: 5 },
-  { name: "natteam", label: "Favorite National Team?", number: 6 },
-  { name: "favleague", label: "Favorite League?", number: 7 },
-  { name: "favjersey", label: "Favorite Jersey?", number: 8 },
-  { name: "favmemspec", label: "Favorite Memory as a spectator?", number: 9 },
-  { name: "wrsmemspec", label: "Worst Memory as a spectator?", number: 10 },
-  { name: "favmemplr", label: "Favorite Memory as a player?", number: 11 },
-  { name: "wrsmemplr", label: "Worst Memory as a player?", number: 12 },
-  { name: "age", label: "When did you start playing?", number: 13 },
-  { name: "why", label: "Why did you start playing?", number: 14 },
+  { image: stepFive, name: "favclub", label: "Favorite Club?", number: 5 },
+  { image: stepSix, name: "natteam", label: "Favorite National Team?", number: 6 },
+  { image: stepSeven, name: "favleague", label: "Favorite League?", number: 7 },
+  { image: stepEight, name: "favjersey", label: "Favorite Jersey?", number: 8 },
+  { image: stepNine, name: "favmemspec", label: "Favorite Memory as a spectator?", number: 9 },
+  { image: stepTen, name: "wrsmemspec", label: "Worst Memory as a spectator?", number: 10 },
+  { image: stepEleven, name: "favmemplr", label: "Favorite Memory as a player?", number: 11 },
+  { image: stepTwelve, name: "wrsmemplr", label: "Worst Memory as a player?", number: 12 },
+  { image: stepThirteen, name: "age", label: "When did you start playing?", number: 13 },
+  { image: stepFourteen, name: "why", label: "Why did you start playing?", number: 14 },
   {
-    name: "amateur",
+    image: stepFifteen, name: "amateur",
     label: "Experience Level",
     number: 15,
     type: "checkbox",
@@ -133,19 +160,19 @@ const wizardStepsContent: {
       { name: "pro", label: "Pro" },
     ],
   },
-  { name: "achv", label: "Biggest achievement?", number: 16 },
-  { name: "goals", label: "Any futbol-related goals?", number: 17 },
-  { name: "advc", label: "Best futbol advice?", number: 18 },
-  { name: "clt", label: "Favorite pair of cleats?", number: 19 },
-  { name: "ball", label: "Favorite ball?", number: 20 },
+  { image: stepSixteen, name: "achv", label: "Biggest achievement?", number: 16 },
+  { image: stepSeventeen, name: "goals", label: "Any futbol-related goals?", number: 17 },
+  { image: stepEighteen, name: "advc", label: "Best futbol advice?", number: 18 },
+  { image: stepNineteen, name: "clt", label: "Favorite pair of cleats?", number: 19 },
+  { image: stepTwenty, name: "ball", label: "Favorite ball?", number: 20 },
   {
-    name: "jabu",
+    image: stepTwentyOne, name: "jabu",
     label: "Opinion on Jabulani?",
     number: 21,
     options: ["Trash", "Enjoyable", "No idea"],
     type: "radio",
   },
-  { name: "love", label: "Best compliment received?", number: 22 },
+  { image: stepTwentyTwo, name: "love", label: "Best compliment received?", number: 22 },
 ];
 
 export default function GeneralSurveyPage() {
@@ -212,6 +239,7 @@ export default function GeneralSurveyPage() {
     return (
       <WizardStep key={step.number} stepIndex={step.number - 1}>
         <StepGenerator<WizardData, keyof WizardData>
+          image={step.image}
           name={step.name}
           label={step.label}
           number={step.number}
