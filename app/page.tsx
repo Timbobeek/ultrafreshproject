@@ -21,7 +21,7 @@ export default function Home() {
       {
          title: 'surveys',
          text: 'text-black',
-         image: "bg-[url('../public/images/ronaldinho.webp')]",
+         image: "bg-[url('../public/surveyBoards/ronaldinho.webp')]",
          borderColor: 'border-gray-300',
          backgroundColor: 'bg-gray-300/75',
          hover: '',
@@ -30,7 +30,7 @@ export default function Home() {
       {
         title: 'discussions',
         text: 'text-black',
-        image: "bg-[url('../public/images/sheva.jpg')]",
+        image: "bg-[url('../public/surveyBoards/sheva.jpg')]",
         borderColor: 'border-blue-300',
         backgroundColor: 'bg-blue-300/75',
         hover: '',
@@ -39,7 +39,7 @@ export default function Home() {
       {
         title: 'images',
         text: 'text-black',
-        image: "bg-[url('../public/images/khvicha.jpg')]",
+        image: "bg-[url('../public/surveyBoards/khvicha.jpg')]",
         borderColor: 'border-pink-300',
         backgroundColor: 'bg-pink-300/75',
         hover: '',

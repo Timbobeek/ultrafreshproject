@@ -19,7 +19,7 @@ export default function Page(){
          {
             title: 'kickers',
             text: 'text-black',
-            image: "bg-[url('../public/images/figo.jpeg')]",
+            image: "bg-[url('../public/surveyBoards/figo.jpeg')]",
             borderColor: 'border-orange-300',
             backgroundColor: 'bg-orange-300/75',
             hover: '',
@@ -28,7 +28,7 @@ export default function Page(){
          {
            title: 'referees',
            text: 'text-black',
-           image: "bg-[url('../public/images/torres.jpg')]",
+           image: "bg-[url('../public/surveyBoards/torres.jpg')]",
            borderColor: 'border-rose-300',
            backgroundColor: 'bg-rose-300/75',
            hover: '',
@@ -37,7 +37,7 @@ export default function Page(){
          {
            title: 'arsenal',
            text: 'text-black',
-           image: "bg-[url('../public/images/drogba.webp')]",
+           image: "bg-[url('../public/surveyBoards/drogba.webp')]",
            borderColor: 'border-lime-300',
            backgroundColor: 'bg-lime-300/75',
            hover: '',

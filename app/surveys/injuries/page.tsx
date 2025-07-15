@@ -21,6 +21,7 @@ export default function InjuriesSurvey(){
 
    return(
       <div className="">
+         <p className="text-pink-300 text-large">hello</p>
          <Carousel className="h-96 bg-background">
          <CarouselContent className="text-foreground">
             <CarouselItem className="">Question #1</CarouselItem>

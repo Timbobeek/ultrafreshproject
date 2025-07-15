@@ -14,7 +14,7 @@ export default function Page(){
          {
             title: 'general survey',
             text: 'text-black',
-            image: "bg-[url('../public/images/buffon.jpg')]",
+            image: "bg-[url('../public/surveyBoards/buffon.jpg')]",
             borderColor: 'border-orange-300',
             backgroundColor: 'bg-orange-300/75',
             hover: '',
@@ -23,7 +23,7 @@ export default function Page(){
          {
            title: 'injuries',
            text: 'text-black',
-           image: "bg-[url('../public/images/henry.jpg')]",
+           image: "bg-[url('../public/surveyBoards/henry.jpg')]",
            borderColor: 'border-rose-300',
            backgroundColor: 'bg-rose-300/75',
            hover: '',
@@ -32,7 +32,7 @@ export default function Page(){
          {
            title: 'world cups',
            text: 'text-black',
-           image: "bg-[url('../public/images/ronaldo.jpg')]",
+           image: "bg-[url('../public/surveyBoards/ronaldo.jpg')]",
            borderColor: 'border-lime-300',
            backgroundColor: 'bg-lime-300/75',
            hover: '',

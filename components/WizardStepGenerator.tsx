@@ -52,11 +52,11 @@ export function StepGenerator<T extends FieldValues, Name extends keyof T>({
             control={methods.control}
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-black">{label}</FormLabel>
+                <FormLabel className="!text-medium">{label}</FormLabel>
                 <FormControl>
                   <div className="space-y-2">
                     {options?.map((val) => (
-                      <label key={val} className="flex items-center space-x-2">
+                      <label key={val} className="space-x-2 text-background accent-background">
                         <input
                           type="radio"
                           value={val}
@@ -81,7 +81,7 @@ export function StepGenerator<T extends FieldValues, Name extends keyof T>({
             control={methods.control}
             render={({ fieldState }) => (
               <FormItem>
-                <FormLabel className="text-black">{label}</FormLabel>
+                <FormLabel className="!text-medium">{label}</FormLabel>
                 <div className="space-y-2">
                   {checkboxFields?.map((cb) => (
                     <FormField
@@ -108,7 +108,7 @@ export function StepGenerator<T extends FieldValues, Name extends keyof T>({
                   ))}
                 </div>
                 {fieldState.error && (
-                  <p className="text-sm text-red-500">
+                  <p className=" text-red-500">
                     {fieldState.error.message}
                   </p>
                 )}
@@ -124,7 +124,7 @@ export function StepGenerator<T extends FieldValues, Name extends keyof T>({
             control={methods.control}
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-black">{label}</FormLabel>
+                <FormLabel className="!text-medium text-background">{label}</FormLabel>
                 <FormControl>
                   <Input
                     {...field}

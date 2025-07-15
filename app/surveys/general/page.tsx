@@ -192,7 +192,7 @@ export default function GeneralSurveyPage() {
       love: "",
       userId: "hjkfhjsdhfjkhdsjfhjh",
     },
-    mode: "onTouched",
+    mode: "onChange",
   });
 
   const stepsContentMapper = wizardStepsContent.map((step) => {
@@ -220,6 +220,7 @@ export default function GeneralSurveyPage() {
           checkboxFields={step.checkboxFields}
           isFinalStep={step.number === wizardStepsContent.length}
           onSubmit={((data, e) => {
+            console.log('submitted', data)
             e?.preventDefault();
             axios.post(
               "https://ferrata-crud2.builtwithdark.com/v1/surveys/",
@@ -236,7 +237,7 @@ export default function GeneralSurveyPage() {
 
   return (
     <div className="flex flex-col items-center">
-      <div className="max-w-Midfielder mx-auto mt-10 p-6 border rounded-xl shadow-xl bg-foreground">
+      <div className="mx-auto mt-10 p-6 border rounded-xl bg-foreground">
         <WizardProvider<WizardData> methods={methods}>
           {stepsContentMapper}
         </WizardProvider>

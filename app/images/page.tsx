@@ -18,7 +18,7 @@ export default function Page() {
             {
                title: 'funny images',
                text: 'text-black',
-               image: "bg-[url('../public/images/beckham.webp')]",
+               image: "bg-[url('../public/surveyBoards/beckham.webp')]",
                borderColor: 'border-orange-300',
                backgroundColor: 'bg-orange-300/75',
                hover: '',
@@ -27,7 +27,7 @@ export default function Page() {
             {
               title: 'sad images',
               text: 'text-black',
-              image: "bg-[url('../public/images/dempsey.jpg')]",
+              image: "bg-[url('../public/surveyBoards/dempsey.jpg')]",
               borderColor: 'border-rose-300',
               backgroundColor: 'bg-rose-300/75',
               hover: '',
@@ -36,7 +36,7 @@ export default function Page() {
             {
               title: 'kickers 2025',
               text: 'text-black',
-              image: "bg-[url('../public/images/maradona.webp')]",
+              image: "bg-[url('../public/surveyBoards/maradona.webp')]",
               borderColor: 'border-lime-300',
               backgroundColor: 'bg-lime-300/75',
               hover: '',
@@ -45,7 +45,7 @@ export default function Page() {
             {
                title: 'my face',
                text: 'text-black',
-               image: "bg-[url('../public/images/maradona.webp')]",
+               image: "bg-[url('../public/surveyBoards/maradona.webp')]",
                borderColor: 'border-fuchsia-600',
                backgroundColor: 'bg-fuchsia-300/75',
                hover: '',
