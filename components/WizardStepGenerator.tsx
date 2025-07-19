@@ -1,4 +1,11 @@
-import { FormField, FormItem, FormLabel, FormControl, FormMessage, Form } from "@/components/ui/form";
+import {
+  FormField,
+  FormItem,
+  FormLabel,
+  FormControl,
+  FormMessage,
+  Form,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useWizard } from "./WizardContext";
@@ -7,7 +14,8 @@ import React from "react";
 import { Path } from "react-hook-form";
 import { StaticImageData } from "next/image";
 import Image from "next/image";
-
+import { ChevronLeft, ChevronRight, Rocket } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 type CheckboxField<T extends FieldValues> = {
   name: keyof T;
@@ -19,6 +27,7 @@ export type StepGeneratorProps<T extends FieldValues, Name extends keyof T> = {
   name: Name;
   label: string;
   number: number;
+  textSize: string;
   type: "string" | "number" | "radio" | "checkbox";
   options?: string[];
   checkboxFields?: CheckboxField<T>[];
@@ -31,6 +40,7 @@ export function StepGenerator<T extends FieldValues, Name extends keyof T>({
   image,
   label,
   number,
+  textSize,
   type,
   options,
   checkboxFields,
@@ -43,33 +53,88 @@ export function StepGenerator<T extends FieldValues, Name extends keyof T>({
 
   const isCheckboxStep = type === "checkbox";
   const fieldsToTrigger: Path<T>[] = isCheckboxStep
-  ? checkboxFields?.map((cb) => cb.name as unknown as Path<T>) ?? []
-  : [name as unknown as Path<T>];
-
-
+    ? checkboxFields?.map((cb) => cb.name as unknown as Path<T>) ?? []
+    : [name as unknown as Path<T>];
 
   const renderInput = () => {
     switch (type) {
       case "radio":
         return (
           <FormField
-          name={name as unknown as Path<T>}
+            name={name as unknown as Path<T>}
             control={methods.control}
             render={({ field }) => (
-              <FormItem>
-                <Image src={image} alt="some image"/>
-                <FormLabel className="!text-medium">{label}</FormLabel>
+              <FormItem className="w-[900px]">
+                <div className="relative h-[500px] overflow-hidden">
+                  <Image
+                    src={image}
+                    alt="some image"
+                    fill
+                    className="object-cover object-top"
+                  />
+                </div>
+                <div className="flex justify-center">
+                  <div className="flex items-center">
+                    {number === 1 && (
+                      <Button
+                        variant="pagination"
+                        className="text-black hover:text-background invisible pointer-events-none"
+                        onClick={goBack}
+                      >
+                        <ChevronLeft />
+                      </Button>
+                    )}
+                    {number !== 1 && (
+                      <Button
+                        variant="pagination"
+                        className="text-black hover:text-background"
+                        onClick={goBack}
+                      >
+                        <ChevronLeft className="w-12 h-12" />
+                      </Button>
+                    )}
+                    <FormLabel className="!text-medium text-black my-2">
+                      {label}
+                    </FormLabel>
+                    {isFinalStep ? (
+                      <Button
+                        variant="submit"
+                        type="submit"
+                        onClick={methods.handleSubmit((data, e) => {
+                          onSubmit?.(data, e);
+                        })}
+                      >
+                        <Rocket />
+                      </Button>
+                    ) : (
+                      <Button
+                        variant="pagination"
+                        className="text-black hover:text-background"
+                        onClick={async () => {
+                          const valid = await methods.trigger(fieldsToTrigger);
+                          if (valid) setStep(number);
+                        }}
+                      >
+                        <ChevronRight className="w-12 h-12" />
+                      </Button>
+                    )}
+                  </div>
+                </div>
                 <FormControl>
-                  <div className="space-y-2">
+                  <div className={cn("h-12 content-center text-2xl", textSize)}>
                     {options?.map((val) => (
-                      <label key={val} className="space-x-2 text-background accent-background">
+                      <label
+                        key={val}
+                        className=" text-black accent-background mx-1"
+                      >
                         <input
+                          className="w-8 h-8"
                           type="radio"
                           value={val}
                           checked={field.value === val}
                           onChange={() => field.onChange(val)}
                         />
-                        <span className="capitalize">{val}</span>
+                        <span className="capitalize ml-1">{val}</span>
                       </label>
                     ))}
                   </div>
@@ -83,21 +148,77 @@ export function StepGenerator<T extends FieldValues, Name extends keyof T>({
       case "checkbox":
         return (
           <FormField
-          name={name as unknown as Path<T>}
+            name={name as unknown as Path<T>}
             control={methods.control}
             render={({ fieldState }) => (
-              <FormItem>
-                <Image src={image} alt="some image"/>
-                <FormLabel className="!text-medium">{label}</FormLabel>
-                <div className="space-y-2">
+              <FormItem className="w-[900px]">
+                <div className="relative h-[500px] overflow-hidden">
+                  <Image
+                    src={image}
+                    alt="some image"
+                    fill
+                    className="object-cover object-top"
+                  />
+                </div>
+                <div className="flex justify-center">
+                  <div className="flex items-center">
+                    {number === 1 && (
+                      <Button
+                        variant="pagination"
+                        className="text-black hover:text-background invisible pointer-events-none"
+                        onClick={goBack}
+                      >
+                        <ChevronLeft />
+                      </Button>
+                    )}
+                    {number !== 1 && (
+                      <Button
+                        variant="pagination"
+                        className="text-black hover:text-background"
+                        onClick={goBack}
+                      >
+                        <ChevronLeft className="w-12 h-12" />
+                      </Button>
+                    )}
+                    <FormLabel className="!text-medium text-black my-2">
+                      {label}
+                    </FormLabel>
+                    {isFinalStep ? (
+                      <Button
+                        variant="submit"
+                        type="submit"
+                        onClick={methods.handleSubmit((data, e) => {
+                          onSubmit?.(data, e);
+                        })}
+                      >
+                        <Rocket />
+                      </Button>
+                    ) : (
+                      <Button
+                        variant="pagination"
+                        className="text-black hover:text-background"
+                        onClick={async () => {
+                          const valid = await methods.trigger(fieldsToTrigger);
+                          if (valid) setStep(number);
+                        }}
+                      >
+                        <ChevronRight className="w-12 h-12" />
+                      </Button>
+                    )}
+                  </div>
+                </div>
+                <div className="flex justify-center">
                   {checkboxFields?.map((cb) => (
                     <FormField
                       key={cb.name as string}
                       name={cb.name as unknown as Path<T>}
                       control={methods.control}
                       render={({ field }) => (
-                        <FormItem className="flex items-center gap-2">
+                        <FormItem
+                          className={cn("mx-1 h-12 content-center", textSize)}
+                        >
                           <input
+                            className="w-4 h-4 mx-1 accent-background"
                             type="checkbox"
                             name={field.name}
                             ref={field.ref}
@@ -114,11 +235,10 @@ export function StepGenerator<T extends FieldValues, Name extends keyof T>({
                     />
                   ))}
                 </div>
-                {fieldState.error && (
-                  <p className=" text-red-500">
-                    {fieldState.error.message}
-                  </p>
-                )}
+
+                <p className="min-h-[1.5rem] text-red-500">
+                  {fieldState.error?.message}
+                </p>
               </FormItem>
             )}
           />
@@ -127,14 +247,70 @@ export function StepGenerator<T extends FieldValues, Name extends keyof T>({
       default:
         return (
           <FormField
-          name={name as unknown as Path<T>}
+            name={name as unknown as Path<T>}
             control={methods.control}
             render={({ field }) => (
-              <FormItem>
-                <Image src={image} alt="some image"/>
-                <FormLabel className="!text-medium text-background">{label}</FormLabel>
+              <FormItem className="w-[900px]">
+                <div className="relative h-[500px] overflow-hidden">
+                  <Image
+                    src={image}
+                    alt="some image"
+                    fill
+                    className="object-cover object-top"
+                  />
+                </div>
+                <div className="flex justify-center">
+                  <div className="flex items-center">
+                    {number === 1 && (
+                      <Button
+                        variant="pagination"
+                        className="text-black hover:text-background invisible pointer-events-none" //not sure this is the way to do it
+                        onClick={goBack}
+                      >
+                        <ChevronLeft />
+                      </Button>
+                    )}
+                    {number !== 1 && (
+                      <Button
+                        variant="pagination"
+                        className="text-black hover:text-background"
+                        onClick={goBack}
+                      >
+                        <ChevronLeft className="w-12 h-12" />
+                      </Button>
+                    )}
+                    <FormLabel className="!text-medium text-black my-2">
+                      {label}
+                    </FormLabel>
+                    {isFinalStep ? (
+                      <Button
+                        variant="submit"
+                        type="submit"
+                        onClick={methods.handleSubmit((data, e) => {
+                          onSubmit?.(data, e);
+                        })}
+                      >
+                        <Rocket />
+                      </Button>
+                    ) : (
+                      <Button
+                        variant="pagination"
+                        className="text-black hover:text-background"
+                        onClick={async () => {
+                          const valid = await methods.trigger(fieldsToTrigger);
+                          if (valid) setStep(number);
+                        }}
+                      >
+                        <ChevronRight className="w-12 h-12" />
+                      </Button>
+                    )}
+                  </div>
+                </div>
+
                 <FormControl>
                   <Input
+                    className="placeholder-green-600 no-spinner"
+                    placeholder="Type here..."
                     {...field}
                     type={type === "number" ? "number" : "text"}
                   />
@@ -150,35 +326,38 @@ export function StepGenerator<T extends FieldValues, Name extends keyof T>({
   return (
     <Form {...methods}>
       {renderInput()}
-      <div className="mt-4 flex justify-end space-x-2">
+      {/* <div className="mt-4 flex justify-between relative bottom-36">
         {number !== 1 && (
-          <Button variant="outline" onClick={goBack}>
-            Back
+          <Button
+            variant="pagination"
+            className="text-black hover:text-background"
+            onClick={goBack}
+          >
+            <ChevronLeft className="w-12 h-12" />
           </Button>
         )}
         {isFinalStep ? (
-         <Button
-         type="submit"
-         onClick={methods.handleSubmit((data, e) => {
-           onSubmit?.(data, e);
-         })}
-       >
-         Submit
-       </Button>
-       
-        
+          <Button
+            type="submit"
+            onClick={methods.handleSubmit((data, e) => {
+              onSubmit?.(data, e);
+            })}
+          >
+            Submit
+          </Button>
         ) : (
           <Button
-            type="button"
+            variant="pagination"
+            className="text-black hover:text-background"
             onClick={async () => {
               const valid = await methods.trigger(fieldsToTrigger);
               if (valid) setStep(number);
             }}
           >
-            Next
+            <ChevronRight className="w-12 h-12" />
           </Button>
         )}
-      </div>
+      </div> */}
     </Form>
   );
 }
