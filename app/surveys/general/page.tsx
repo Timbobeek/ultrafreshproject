@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { useEffect } from "react";
 import { z } from "zod";
@@ -9,33 +9,31 @@ import { WizardProvider } from "@/components/WizardContext";
 import { StepGenerator } from "@/components/WizardStepGenerator";
 import { WizardStep } from "@/components/WizardStep";
 import { useHeader } from "../../context/HeaderContext";
-import axios from 'axios';
+import axios from "axios";
 import { StaticImageData } from "next/image";
 
-import stepOne from '../../../public/generalSurvey/vennegor.jpg';
-import stepTwo from '../../../public/generalSurvey/Soccer-Formation~.png';
-import stepThree from '../../../public/generalSurvey/ronaldogaucho.jpg';
-import stepFour from '../../../public/generalSurvey/Messi-&-Ronaldo.png';
-import stepFive from '../../../public/generalSurvey/morecambe.jpg';
-import stepSix from '../../../public/generalSurvey/usmnt~.jpg';
-import stepSeven from '../../../public/generalSurvey/premCrop2.jpg';
-import stepEight from '../../../public/generalSurvey/collection.webp';
-import stepNine from '../../../public/generalSurvey/liverpool.avif';
-import stepTen from '../../../public/generalSurvey/brazilgermany.jpg';
-import stepEleven from '../../../public/generalSurvey/hawklooongCrop.jpg';
-import stepTwelve from '../../../public/generalSurvey/urnpublinjury.webp';
-import stepThirteen from '../../../public/generalSurvey/kids~.jpg';
-import stepFourteen from '../../../public/generalSurvey/2006-world-cup.jpg';
-import stepFifteen from '../../../public/generalSurvey/pyramid.webp';
-import stepSixteen from '../../../public/generalSurvey/worldcup.webp';
-import stepSeventeen from '../../../public/generalSurvey/conference.jpg';
-import stepEighteen from '../../../public/generalSurvey/advice.webp';
-import stepNineteen from '../../../public/generalSurvey/nike-total-90-laser-i-remake-boots-9.jpg';
-import stepTwenty from '../../../public/generalSurvey/brazuca.jpg';
-import stepTwentyOne from '../../../public/generalSurvey/jabulani.avif';
-import stepTwentyTwo from '../../../public/generalSurvey/klopp.jpg';
-
-
+import stepOne from "../../../public/generalSurvey/vennegor.jpg";
+import stepTwo from "../../../public/generalSurvey/Soccer-Formation~.png";
+import stepThree from "../../../public/generalSurvey/ronaldogaucho.jpg";
+import stepFour from "../../../public/generalSurvey/Messi-&-Ronaldo.png";
+import stepFive from "../../../public/generalSurvey/morecambe.jpg";
+import stepSix from "../../../public/generalSurvey/usmnt~.jpg";
+import stepSeven from "../../../public/generalSurvey/premCrop2.jpg";
+import stepEight from "../../../public/generalSurvey/collection.webp";
+import stepNine from "../../../public/generalSurvey/liverpool.avif";
+import stepTen from "../../../public/generalSurvey/brazilgermany.jpg";
+import stepEleven from "../../../public/generalSurvey/hawklooongCrop.jpg";
+import stepTwelve from "../../../public/generalSurvey/urnpublinjury.webp";
+import stepThirteen from "../../../public/generalSurvey/kids~.jpg";
+import stepFourteen from "../../../public/generalSurvey/2006-world-cup.jpg";
+import stepFifteen from "../../../public/generalSurvey/pyramid.webp";
+import stepSixteen from "../../../public/generalSurvey/worldcup.webp";
+import stepSeventeen from "../../../public/generalSurvey/conference.jpg";
+import stepEighteen from "../../../public/generalSurvey/advice.webp";
+import stepNineteen from "../../../public/generalSurvey/nike-total-90-laser-i-remake-boots-9.jpg";
+import stepTwenty from "../../../public/generalSurvey/brazuca.jpg";
+import stepTwentyOne from "../../../public/generalSurvey/jabulani.avif";
+import stepTwentyTwo from "../../../public/generalSurvey/klopp.jpg";
 
 const apiKey = process.env.NEXT_PUBLIC_API_KEY;
 
@@ -44,7 +42,12 @@ export type WizardData = {
   name: string;
   position: "Goalkeeper" | "Defender" | "Midfielder" | "Forward";
   favplayer: string;
-  mr: "Messi" | "Ronaldo" | "Like and respect both" | "Dislike both" | "Don't care";
+  mr:
+    | "Messi"
+    | "Ronaldo"
+    | "Like and respect both"
+    | "Dislike both"
+    | "Don't care";
   favclub: string;
   natteam: string;
   favleague: string;
@@ -75,7 +78,13 @@ const baseSchema = z.object({
   name: z.string().min(1, "Answer is required"),
   position: z.enum(["Goalkeeper", "Defender", "Midfielder", "Forward"]),
   favplayer: z.string().min(1, "Answer is required"),
-  mr: z.enum(["Messi", "Ronaldo", "Like and respect both", "Dislike both", "Don't care"]),
+  mr: z.enum([
+    "Messi",
+    "Ronaldo",
+    "Like and respect both",
+    "Dislike both",
+    "Don't care",
+  ]),
   favclub: z.string().min(1, "Answer is required"),
   natteam: z.string().min(1, "Answer is required"),
   favleague: z.string().min(1, "Answer is required"),
@@ -104,7 +113,12 @@ const baseSchema = z.object({
 
 const fullSchema = baseSchema.refine(
   (data) =>
-    data.amateur || data.hs || data.acad || data.college || data.semipro || data.pro,
+    data.amateur ||
+    data.hs ||
+    data.acad ||
+    data.college ||
+    data.semipro ||
+    data.pro,
   {
     message: "Select at least one experience level",
     path: ["amateur"],
@@ -121,36 +135,117 @@ const wizardStepsContent: {
   checkboxFields?: { name: keyof WizardData; label: string }[];
   textSize: string;
 }[] = [
-  { image: stepOne, name: "name", label: "What's your name?", number: 1, textSize: "" },
   {
-    image: stepTwo, name: "position",
+    image: stepOne,
+    name: "name",
+    label: "What's your name?",
+    number: 1,
+    textSize: "",
+  },
+  {
+    image: stepTwo,
+    name: "position",
     label: "Favorite position to play?",
     number: 2,
     options: ["Goalkeeper", "Defender", "Midfielder", "Forward"],
     type: "radio",
-    textSize: "text-2xl"
+    textSize: "text-2xl",
   },
-  { image: stepThree, name: "favplayer", label: "Who's your favorite player?", number: 3, textSize: "" },
   {
-    image: stepFour, name: "mr",
+    image: stepThree,
+    name: "favplayer",
+    label: "Who's your favorite player?",
+    number: 3,
+    textSize: "",
+  },
+  {
+    image: stepFour,
+    name: "mr",
     label: "Messi or Ronaldo?",
     number: 4,
-    options: ["Messi", "Ronaldo", "Like and respect both", "Dislike both", "Don't care"],
+    options: [
+      "Messi",
+      "Ronaldo",
+      "Like and respect both",
+      "Dislike both",
+      "Don't care",
+    ],
     type: "radio",
-    textSize: "text-lg"
+    textSize: "text-lg",
   },
-  { image: stepFive, name: "favclub", label: "Favorite club?", number: 5, textSize: "" },
-  { image: stepSix, name: "natteam", label: "Favorite national team?", number: 6, textSize: "" },
-  { image: stepSeven, name: "favleague", label: "Favorite league?", number: 7, textSize: "" },
-  { image: stepEight, name: "favjersey", label: "Favorite jersey you own?", number: 8, textSize: "" },
-  { image: stepNine, name: "favmemspec", label: "Favorite memory as a fan?", number: 9, textSize: "" },
-  { image: stepTen, name: "wrsmemspec", label: "Worst memory as a fan?", number: 10, textSize: "" },
-  { image: stepEleven, name: "favmemplr", label: "Favorite memory as a player?", number: 11, textSize: "" },
-  { image: stepTwelve, name: "wrsmemplr", label: "Worst memory as a player?", number: 12, textSize: "" },
-  { image: stepThirteen, name: "age", label: "When did you start playing?", number: 13, textSize: "" },
-  { image: stepFourteen, name: "why", label: "Why did you start playing?", number: 14, textSize: "" },
   {
-    image: stepFifteen, name: "amateur",
+    image: stepFive,
+    name: "favclub",
+    label: "Favorite club?",
+    number: 5,
+    textSize: "",
+  },
+  {
+    image: stepSix,
+    name: "natteam",
+    label: "Favorite national team?",
+    number: 6,
+    textSize: "",
+  },
+  {
+    image: stepSeven,
+    name: "favleague",
+    label: "Favorite league?",
+    number: 7,
+    textSize: "",
+  },
+  {
+    image: stepEight,
+    name: "favjersey",
+    label: "Favorite jersey you own?",
+    number: 8,
+    textSize: "",
+  },
+  {
+    image: stepNine,
+    name: "favmemspec",
+    label: "Favorite memory as a fan?",
+    number: 9,
+    textSize: "",
+  },
+  {
+    image: stepTen,
+    name: "wrsmemspec",
+    label: "Worst memory as a fan?",
+    number: 10,
+    textSize: "",
+  },
+  {
+    image: stepEleven,
+    name: "favmemplr",
+    label: "Favorite memory as a player?",
+    number: 11,
+    textSize: "",
+  },
+  {
+    image: stepTwelve,
+    name: "wrsmemplr",
+    label: "Worst memory as a player?",
+    number: 12,
+    textSize: "",
+  },
+  {
+    image: stepThirteen,
+    name: "age",
+    label: "When did you start playing?",
+    number: 13,
+    textSize: "",
+  },
+  {
+    image: stepFourteen,
+    name: "why",
+    label: "Why did you start playing?",
+    number: 14,
+    textSize: "",
+  },
+  {
+    image: stepFifteen,
+    name: "amateur",
     label: "Your experience level?",
     number: 15,
     type: "checkbox",
@@ -162,22 +257,59 @@ const wizardStepsContent: {
       { name: "semipro", label: "Semi-Pro" },
       { name: "pro", label: "Pro" },
     ],
-    textSize: "text-lg"
+    textSize: "text-lg",
   },
-  { image: stepSixteen, name: "achv", label: "Your biggest achievement?", number: 16, textSize: "" },
-  { image: stepSeventeen, name: "goals", label: "Any futbol-related goals?", number: 17, textSize: "" },
-  { image: stepEighteen, name: "advc", label: "Best futbol advice recieved?", number: 18, textSize: "" },
-  { image: stepNineteen, name: "clt", label: "Favorite pair of cleats?", number: 19, textSize: "" },
-  { image: stepTwenty, name: "ball", label: "Favorite ball?", number: 20, textSize: "" },
   {
-    image: stepTwentyOne, name: "jabu",
+    image: stepSixteen,
+    name: "achv",
+    label: "Your biggest achievement?",
+    number: 16,
+    textSize: "",
+  },
+  {
+    image: stepSeventeen,
+    name: "goals",
+    label: "Any futbol-related goals?",
+    number: 17,
+    textSize: "",
+  },
+  {
+    image: stepEighteen,
+    name: "advc",
+    label: "Best futbol advice recieved?",
+    number: 18,
+    textSize: "",
+  },
+  {
+    image: stepNineteen,
+    name: "clt",
+    label: "Favorite pair of cleats?",
+    number: 19,
+    textSize: "",
+  },
+  {
+    image: stepTwenty,
+    name: "ball",
+    label: "Favorite ball?",
+    number: 20,
+    textSize: "",
+  },
+  {
+    image: stepTwentyOne,
+    name: "jabu",
     label: "Opinion on Jabulani?",
     number: 21,
     options: ["Trash", "Enjoyable", "No idea"],
     type: "radio",
-    textSize: "text-2xl"
+    textSize: "text-2xl",
   },
-  { image: stepTwentyTwo, name: "love", label: "Best compliment received?", number: 22, textSize: "" },
+  {
+    image: stepTwentyTwo,
+    name: "love",
+    label: "Best compliment received?",
+    number: 22,
+    textSize: "",
+  },
 ];
 
 export default function GeneralSurveyPage() {
@@ -253,8 +385,9 @@ export default function GeneralSurveyPage() {
           options={step.options}
           checkboxFields={step.checkboxFields}
           isFinalStep={step.number === wizardStepsContent.length}
-          onSubmit={((data, e) => {
-            console.log('submitted', data)
+          isFirstStep={step.number === 1} //is it always 1???
+          onSubmit={(data, e) => {
+            console.log("submitted", data);
             e?.preventDefault();
             axios.post(
               "https://ferrata-crud2.builtwithdark.com/v1/surveys/",
@@ -263,7 +396,7 @@ export default function GeneralSurveyPage() {
                 headers: { "x-api-key": apiKey },
               }
             );
-          })}
+          }}
         />
       </WizardStep>
     );
