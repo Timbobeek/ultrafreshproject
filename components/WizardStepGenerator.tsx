@@ -1,21 +1,12 @@
-import {
-  FormField,
-  FormItem,
-  FormLabel,
-  FormControl,
-  FormMessage,
-  Form,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+import { Form } from "@/components/ui/form";
 import { useWizard } from "./WizardContext";
 import { FieldValues } from "react-hook-form";
 import React from "react";
 import { Path } from "react-hook-form";
 import { StaticImageData } from "next/image";
-import { cn } from "@/lib/utils";
-import WizardStepImage from "./WizardStepImage";
-import { WizardStepNavigation } from "./WizardStepNavigation";
 import WizardRadioInput from "./WizardRadioInput";
+import WizardCheckboxInput from "./WizardCheckboxInput";
+import WizardTextInput from "./WizardTextInput";
 
 type CheckboxField<T extends FieldValues> = {
   name: keyof T;
@@ -447,96 +438,96 @@ export function StepGenerator<T extends FieldValues, Name extends keyof T>({
   //   />
   // );
 
-  const renderCheckboxInput = () => (
-    <FormField
-      name={name as unknown as Path<T>}
-      control={methods.control}
-      render={({ fieldState }) => (
-        <FormItem className="w-[900px]">
-          <WizardStepImage image={image} />
-          <WizardStepNavigation
-            label={label}
-            isFirstStep={number === 1}
-            isFinalStep={isFinalStep}
-            onBack={goBack}
-            onNext={async () => {
-              const valid = await methods.trigger(fieldsToTrigger);
-              if (valid) setStep(number);
-            }}
-            onSubmit={() => {
-              methods.handleSubmit((data, e) => onSubmit?.(data, e));
-            }}
-          />
-          <div className="flex justify-center">
-            {checkboxFields?.map((cb) => (
-              <FormField
-                key={cb.name as string}
-                name={cb.name as unknown as Path<T>}
-                control={methods.control}
-                render={({ field }) => (
-                  <FormItem
-                    className={cn("mx-1 h-12 content-center", textSize)}
-                  >
-                    <input
-                      className="w-4 h-4 mx-1 accent-background"
-                      type="checkbox"
-                      name={field.name}
-                      ref={field.ref}
-                      checked={field.value}
-                      onChange={(e) => {
-                        field.onChange(e);
-                        methods.trigger(fieldsToTrigger);
-                      }}
-                      onBlur={field.onBlur}
-                    />
-                    <label htmlFor={field.name}>{cb.label}</label>
-                  </FormItem>
-                )}
-              />
-            ))}
-          </div>
-          <p className="min-h-[1.5rem] text-red-500">
-            {fieldState.error?.message}
-          </p>
-        </FormItem>
-      )}
-    />
-  );
+  // const renderCheckboxInput = () => (
+  //   <FormField
+  //     name={name as unknown as Path<T>}
+  //     control={methods.control}
+  //     render={({ fieldState }) => (
+  //       <FormItem className="w-[900px]">
+  //         <WizardStepImage image={image} />
+  //         <WizardStepNavigation
+  //           label={label}
+  //           isFirstStep={number === 1}
+  //           isFinalStep={isFinalStep}
+  //           onBack={goBack}
+  //           onNext={async () => {
+  //             const valid = await methods.trigger(fieldsToTrigger);
+  //             if (valid) setStep(number);
+  //           }}
+  //           onSubmit={() => {
+  //             methods.handleSubmit((data, e) => onSubmit?.(data, e));
+  //           }}
+  //         />
+  //         <div className="flex justify-center">
+  //           {checkboxFields?.map((cb) => (
+  //             <FormField
+  //               key={cb.name as string}
+  //               name={cb.name as unknown as Path<T>}
+  //               control={methods.control}
+  //               render={({ field }) => (
+  //                 <FormItem
+  //                   className={cn("mx-1 h-12 content-center", textSize)}
+  //                 >
+  //                   <input
+  //                     className="w-4 h-4 mx-1 accent-background"
+  //                     type="checkbox"
+  //                     name={field.name}
+  //                     ref={field.ref}
+  //                     checked={field.value}
+  //                     onChange={(e) => {
+  //                       field.onChange(e);
+  //                       methods.trigger(fieldsToTrigger);
+  //                     }}
+  //                     onBlur={field.onBlur}
+  //                   />
+  //                   <label htmlFor={field.name}>{cb.label}</label>
+  //                 </FormItem>
+  //               )}
+  //             />
+  //           ))}
+  //         </div>
+  //         <p className="min-h-[1.5rem] text-red-500">
+  //           {fieldState.error?.message}
+  //         </p>
+  //       </FormItem>
+  //     )}
+  //   />
+  // );
 
-  const renderTextOrNumberInput = () => (
-    <FormField
-      name={name as unknown as Path<T>}
-      control={methods.control}
-      render={({ field }) => (
-        <FormItem className="w-[900px]">
-          <WizardStepImage image={image} />
-          <WizardStepNavigation
-            label={label}
-            isFirstStep={number === 1}
-            isFinalStep={isFinalStep}
-            onBack={goBack}
-            onNext={async () => {
-              const valid = await methods.trigger(fieldsToTrigger);
+  // const renderTextOrNumberInput = () => (
+  //   <FormField
+  //     name={name as unknown as Path<T>}
+  //     control={methods.control}
+  //     render={({ field }) => (
+  //       <FormItem className="w-[900px]">
+  //         <WizardStepImage image={image} />
+  //         <WizardStepNavigation
+  //           label={label}
+  //           isFirstStep={number === 1}
+  //           isFinalStep={isFinalStep}
+  //           onBack={goBack}
+  //           onNext={async () => {
+  //             const valid = await methods.trigger(fieldsToTrigger);
 
-              if (valid) setStep(number);
-            }}
-            onSubmit={() => {
-              methods.handleSubmit((data, e) => onSubmit?.(data, e));
-            }}
-          />
-          <FormControl>
-            <Input
-              className="placeholder-green-600 no-spinner"
-              placeholder="Type here..."
-              {...field}
-              type={type === "number" ? "number" : "text"}
-            />
-          </FormControl>
-          <FormMessage />
-        </FormItem>
-      )}
-    />
-  );
+  //             if (valid) setStep(number);
+  //           }}
+  //           onSubmit={() => {
+  //             methods.handleSubmit((data, e) => onSubmit?.(data, e));
+  //           }}
+  //         />
+  //         <FormControl>
+  //           <Input
+  //             className="placeholder-green-600 no-spinner"
+  //             placeholder="Type here..."
+  //             {...field}
+  //             type={type === "number" ? "number" : "text"}
+  //           />
+  //         </FormControl>
+  //         <FormMessage />
+  //       </FormItem>
+  //     )}
+  //   />
+  // );
 
   const renderInput = () => {
     switch (type) {
@@ -562,9 +553,47 @@ export function StepGenerator<T extends FieldValues, Name extends keyof T>({
           />
         );
       case "checkbox":
-        return renderCheckboxInput();
+        return (
+          <WizardCheckboxInput
+            image={image}
+            name={name}
+            methods={methods}
+            label={label}
+            isFirstStep={isFirstStep}
+            isFinalStep={isFinalStep}
+            onBack={goBack}
+            onNext={async () => {
+              const valid = await methods.trigger(fieldsToTrigger);
+              if (valid) setStep(number);
+            }}
+            onSubmit={() => {
+              methods.handleSubmit((data, e) => onSubmit?.(data, e));
+            }}
+            textSize={textSize}
+            checkboxFields={checkboxFields}
+            fieldsToTrigger={fieldsToTrigger}
+          />
+        );
       default:
-        return renderTextOrNumberInput();
+        return (
+          <WizardTextInput
+            image={image}
+            name={name}
+            methods={methods}
+            label={label}
+            isFirstStep={isFirstStep}
+            isFinalStep={isFinalStep}
+            onBack={goBack}
+            onNext={async () => {
+              const valid = await methods.trigger(fieldsToTrigger);
+              if (valid) setStep(number);
+            }}
+            onSubmit={() => {
+              methods.handleSubmit((data, e) => onSubmit?.(data, e));
+            }}
+            type={type}
+          />
+        );
     }
   };
 

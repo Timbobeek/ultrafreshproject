@@ -1,19 +1,57 @@
 import { FormField, FormItem } from "@/components/ui/form";
+import WizardStepImage from "./WizardStepImage";
+import { WizardStepNavigation } from "./WizardStepNavigation";
+import { StaticImageData } from "next/image";
 import { cn } from "@/lib/utils";
 
-const WizardCheckboxInput = () => (
+type Props = {
+  image: StaticImageData;
+  name: any;
+  methods: any;
+  label: string;
+  isFirstStep?: boolean;
+  isFinalStep?: boolean;
+  onBack: () => void;
+  onNext: () => void;
+  onSubmit: () => void;
+  textSize: string;
+  checkboxFields: any;
+  fieldsToTrigger: any;
+};
+
+const WizardCheckboxInput = ({
+  image,
+  name,
+  methods,
+  label,
+  isFinalStep,
+  isFirstStep,
+  onBack,
+  onNext,
+  onSubmit,
+  textSize,
+  checkboxFields,
+  fieldsToTrigger,
+}: Props) => (
   <FormField
-    name={name as unknown as Path<T>}
+    name={name}
     control={methods.control}
     render={({ fieldState }) => (
       <FormItem className="w-[900px]">
         <WizardStepImage image={image} />
-        <StepNavigation />
+        <WizardStepNavigation
+          label={label}
+          isFirstStep={isFirstStep}
+          isFinalStep={isFinalStep}
+          onBack={onBack}
+          onNext={onNext}
+          onSubmit={onSubmit}
+        />
         <div className="flex justify-center">
           {checkboxFields?.map((cb) => (
             <FormField
               key={cb.name as string}
-              name={cb.name as unknown as Path<T>}
+              name={cb.name as any}
               control={methods.control}
               render={({ field }) => (
                 <FormItem className={cn("mx-1 h-12 content-center", textSize)}>

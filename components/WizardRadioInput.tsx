@@ -52,7 +52,7 @@ const WizardRadioInput = ({
         />
         <FormControl>
           <div className={cn("h-12 content-center text-2xl", textSize)}>
-            {options?.map((val: any) => (
+            {options?.map((val) => (
               <label key={val} className="text-black accent-background mx-1">
                 <input
                   className="w-8 h-8"
