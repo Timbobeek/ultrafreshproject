@@ -1,17 +1,17 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { MuseoModerno } from 'next/font/google'
+import { MuseoModerno } from "next/font/google";
 import Script from "next/script";
 import { Footer } from "@/components/ui/footer";
 import Header from "@/components/ui/Header";
-import { HeaderProvider } from "./context/HeaderContext";
+import { HeaderProvider } from "../context/HeaderContext";
 
 const museoModerno = MuseoModerno({
-  weight: '500',
-  subsets: ['latin'],
-  display: 'swap',
-  fallback: ['Arial', 'sans-serif'],
-})
+  weight: "500",
+  subsets: ["latin"],
+  display: "swap",
+  fallback: ["Arial", "sans-serif"],
+});
 
 export const metadata: Metadata = {
   title: "Next Futbol Survey",
@@ -23,27 +23,27 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-
-
   return (
     <html lang="en" className={museoModerno.className}>
       <head>
-        <Script src="https://kit.fontawesome.com/d4ba08446e.js" crossOrigin="anonymous"></Script>
+        <Script
+          src="https://kit.fontawesome.com/d4ba08446e.js"
+          crossOrigin="anonymous"
+        ></Script>
       </head>
-      <body className={` bg-[url('../public/images/futbolbackground.jpg')] bg-center bg-no-repeat bg-cover bg-fixed min-h-screen flex flex-col items-center` }>
+      <body
+        className={` bg-[url('../public/images/futbolbackground.jpg')] bg-center bg-no-repeat bg-cover bg-fixed min-h-screen flex flex-col items-center`}
+      >
         <HeaderProvider>
-          <Header/>
+          <Header />
 
           <main className="flex-1 flex justify-center items-center w-3/4 lg:w-full">
-              <div className="w-full max-w-5xl text-center">
-                {children}
-              </div>
+            <div className="w-full max-w-5xl text-center">{children}</div>
           </main>
 
-          <Footer/>
+          <Footer />
         </HeaderProvider>
       </body>
     </html>
   );
 }
-
