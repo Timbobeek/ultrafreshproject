@@ -1,19 +1,17 @@
 import { Form } from "@/components/ui/form";
 import { useWizard } from "./WizardContext";
-import { FieldValues } from "react-hook-form";
+import { FieldPath, FieldValues } from "react-hook-form";
 import React from "react";
 import { Path } from "react-hook-form";
 import { StaticImageData } from "next/image";
 import WizardRadioInput from "./WizardRadioInput";
-import WizardCheckboxInput from "./WizardCheckboxInput";
+import WizardCheckboxInput, { CheckboxField } from "./WizardCheckboxInput";
 import WizardTextInput from "./WizardTextInput";
 
-type CheckboxField<T extends FieldValues> = {
-  name: keyof T;
-  label: string;
-};
-
-export type StepGeneratorProps<T extends FieldValues, Name extends keyof T> = {
+export type StepGeneratorProps<
+  T extends FieldValues = FieldValues,
+  Name extends FieldPath<T> = FieldPath<T>
+> = {
   image: StaticImageData;
   name: Name;
   label: string;
@@ -27,7 +25,10 @@ export type StepGeneratorProps<T extends FieldValues, Name extends keyof T> = {
   isFirstStep?: boolean;
 };
 
-export function StepGenerator<T extends FieldValues, Name extends keyof T>({
+export function StepGenerator<
+  T extends FieldValues = FieldValues,
+  Name extends FieldPath<T> = FieldPath<T>
+>({
   name,
   image,
   label,
@@ -42,9 +43,9 @@ export function StepGenerator<T extends FieldValues, Name extends keyof T>({
 }: StepGeneratorProps<T, Name>) {
   const { methods, setStep } = useWizard<T>();
   const isCheckboxStep = type === "checkbox";
-  const fieldsToTrigger: Path<T>[] = isCheckboxStep
-    ? checkboxFields?.map((cb) => cb.name as unknown as Path<T>) ?? []
-    : [name as unknown as Path<T>];
+  const fieldsToTrigger = isCheckboxStep
+    ? checkboxFields?.map((cb) => cb.name) ?? []
+    : [name];
 
   function handleGoBack() {
     return setStep(number - 2);
@@ -56,6 +57,8 @@ export function StepGenerator<T extends FieldValues, Name extends keyof T>({
   }
 
   const handleSubmit = methods.handleSubmit((data, e) => onSubmit?.(data, e));
+
+  console.log("name", name);
 
   const renderInput = () => {
     switch (type) {

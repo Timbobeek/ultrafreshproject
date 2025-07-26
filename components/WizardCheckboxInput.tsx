@@ -3,11 +3,23 @@ import WizardStepImage from "./WizardStepImage";
 import { WizardStepNavigation } from "./WizardStepNavigation";
 import { StaticImageData } from "next/image";
 import { cn } from "@/lib/utils";
+import { FieldValues, UseFormReturn, Path, FieldPath } from "react-hook-form";
 
-type Props = {
+export type CheckboxField<
+  T extends FieldValues = FieldValues,
+  Name extends FieldPath<T> = FieldPath<T>
+> = {
+  name: Name; // apprently, this stands for name: string | number | symbol
+  label: string;
+};
+
+type Props<
+  T extends FieldValues = FieldValues,
+  Name extends FieldPath<T> = FieldPath<T>
+> = {
   image: StaticImageData;
-  name: any;
-  methods: any;
+  name: Name;
+  methods: UseFormReturn<T>;
   label: string;
   isFirstStep?: boolean;
   isFinalStep?: boolean;
@@ -15,11 +27,14 @@ type Props = {
   onNext: () => void;
   onSubmit: () => void;
   textSize: string;
-  checkboxFields: any;
-  fieldsToTrigger: any;
+  checkboxFields?: CheckboxField<T>[];
+  fieldsToTrigger: Path<T>[];
 };
 
-const WizardCheckboxInput = ({
+function WizardCheckboxInput<
+  T extends FieldValues = FieldValues,
+  Name extends FieldPath<T> = FieldPath<T>
+>({
   image,
   name,
   methods,
@@ -32,53 +47,61 @@ const WizardCheckboxInput = ({
   textSize,
   checkboxFields,
   fieldsToTrigger,
-}: Props) => (
-  <FormField
-    name={name}
-    control={methods.control}
-    render={({ fieldState }) => (
-      <FormItem className="w-[900px]">
-        <WizardStepImage image={image} />
-        <WizardStepNavigation
-          label={label}
-          isFirstStep={isFirstStep}
-          isFinalStep={isFinalStep}
-          onBack={onBack}
-          onNext={onNext}
-          onSubmit={onSubmit}
-        />
-        <div className="flex justify-center">
-          {checkboxFields?.map((cb) => (
-            <FormField
-              key={cb.name as string}
-              name={cb.name as any}
-              control={methods.control}
-              render={({ field }) => (
-                <FormItem className={cn("mx-1 h-12 content-center", textSize)}>
-                  <input
-                    className="w-4 h-4 mx-1 accent-background"
-                    type="checkbox"
-                    name={field.name}
-                    ref={field.ref}
-                    checked={field.value}
-                    onChange={(e) => {
-                      field.onChange(e);
-                      methods.trigger(fieldsToTrigger);
-                    }}
-                    onBlur={field.onBlur}
-                  />
-                  <label htmlFor={field.name}>{cb.label}</label>
-                </FormItem>
-              )}
-            />
-          ))}
-        </div>
-        <p className="min-h-[1.5rem] text-red-500">
-          {fieldState.error?.message}
-        </p>
-      </FormItem>
-    )}
-  />
-);
+}: Props<T, Name>) {
+  console.log("name cbx", name);
+  return (
+    <FormField
+      name={name}
+      control={methods.control}
+      render={({ fieldState }) => (
+        <FormItem className="w-[900px]">
+          <WizardStepImage image={image} />
+          <WizardStepNavigation
+            label={label}
+            isFirstStep={isFirstStep}
+            isFinalStep={isFinalStep}
+            onBack={onBack}
+            onNext={onNext}
+            onSubmit={onSubmit}
+          />
+          <div className="flex justify-center">
+            {checkboxFields?.map((cb) => {
+              console.log("inside", cb);
+              return (
+                <FormField
+                  key={cb.name}
+                  name={cb.name}
+                  control={methods.control}
+                  render={({ field }) => (
+                    <FormItem
+                      className={cn("mx-1 h-12 content-center", textSize)}
+                    >
+                      <input
+                        className="w-4 h-4 mx-1 accent-background"
+                        type="checkbox"
+                        name={field.name}
+                        ref={field.ref}
+                        checked={field.value}
+                        onChange={(e) => {
+                          field.onChange(e);
+                          methods.trigger(fieldsToTrigger);
+                        }}
+                        onBlur={field.onBlur}
+                      />
+                      <label htmlFor={field.name}>{cb.label}</label>
+                    </FormItem>
+                  )}
+                />
+              );
+            })}
+          </div>
+          <p className="min-h-[1.5rem] text-red-500">
+            {fieldState.error?.message}
+          </p>
+        </FormItem>
+      )}
+    />
+  );
+}
 
 export default WizardCheckboxInput;

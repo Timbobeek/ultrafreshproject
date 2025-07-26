@@ -38,7 +38,7 @@ import stepTwentyTwo from "../../../public/generalSurvey/klopp.jpg";
 const apiKey = process.env.NEXT_PUBLIC_API_KEY;
 
 // WizardData and fullSchema
-export type WizardData = {
+type WizardData = {
   name: string;
   position: "Goalkeeper" | "Defender" | "Midfielder" | "Forward";
   favplayer: string;
@@ -375,7 +375,7 @@ export default function GeneralSurveyPage() {
 
     return (
       <WizardStep key={step.number} stepIndex={step.number - 1}>
-        <StepGenerator<WizardData, keyof WizardData>
+        <StepGenerator
           image={step.image}
           name={step.name}
           label={step.label}

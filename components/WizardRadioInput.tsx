@@ -8,11 +8,15 @@ import WizardStepImage from "./WizardStepImage";
 import { WizardStepNavigation } from "./WizardStepNavigation";
 import { StaticImageData } from "next/image";
 import { cn } from "@/lib/utils";
+import { FieldPath, FieldValues, UseFormReturn } from "react-hook-form";
 
-type Props = {
+type Props<
+  T extends FieldValues = FieldValues,
+  Name extends FieldPath<T> = FieldPath<T>
+> = {
   image: StaticImageData;
-  name: any;
-  methods: any;
+  name: Name;
+  methods: UseFormReturn<T>;
   label: string;
   isFirstStep?: boolean;
   isFinalStep?: boolean;
@@ -20,10 +24,13 @@ type Props = {
   onNext: () => void;
   onSubmit: () => void;
   textSize: string;
-  options: any;
+  options?: string[];
 };
 
-const WizardRadioInput = ({
+function WizardRadioInput<
+  T extends FieldValues = FieldValues,
+  Name extends FieldPath<T> = FieldPath<T>
+>({
   image,
   name,
   methods,
@@ -35,41 +42,43 @@ const WizardRadioInput = ({
   onSubmit,
   textSize,
   options,
-}: Props) => (
-  <FormField
-    name={name}
-    control={methods.control}
-    render={({ field }) => (
-      <FormItem className="w-[900px]">
-        <WizardStepImage image={image} />
-        <WizardStepNavigation
-          label={label}
-          isFirstStep={isFirstStep}
-          isFinalStep={isFinalStep}
-          onBack={onBack}
-          onNext={onNext}
-          onSubmit={onSubmit}
-        />
-        <FormControl>
-          <div className={cn("h-12 content-center text-2xl", textSize)}>
-            {options?.map((val) => (
-              <label key={val} className="text-black accent-background mx-1">
-                <input
-                  className="w-8 h-8"
-                  type="radio"
-                  value={val}
-                  checked={field.value === val}
-                  onChange={() => field.onChange(val)}
-                />
-                <span className="capitalize ml-1">{val}</span>
-              </label>
-            ))}
-          </div>
-        </FormControl>
-        <FormMessage />
-      </FormItem>
-    )}
-  />
-);
+}: Props<T, Name>) {
+  return (
+    <FormField
+      name={name}
+      control={methods.control}
+      render={({ field }) => (
+        <FormItem className="w-[900px]">
+          <WizardStepImage image={image} />
+          <WizardStepNavigation
+            label={label}
+            isFirstStep={isFirstStep}
+            isFinalStep={isFinalStep}
+            onBack={onBack}
+            onNext={onNext}
+            onSubmit={onSubmit}
+          />
+          <FormControl>
+            <div className={cn("h-12 content-center text-2xl", textSize)}>
+              {options?.map((val) => (
+                <label key={val} className="text-black accent-background mx-1">
+                  <input
+                    className="w-8 h-8"
+                    type="radio"
+                    value={val}
+                    checked={field.value === val}
+                    onChange={() => field.onChange(val)}
+                  />
+                  <span className="capitalize ml-1">{val}</span>
+                </label>
+              ))}
+            </div>
+          </FormControl>
+          <FormMessage />
+        </FormItem>
+      )}
+    />
+  );
+}
 
 export default WizardRadioInput;
