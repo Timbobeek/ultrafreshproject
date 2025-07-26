@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { useWizard } from "./WizardContext";
+import { useWizard } from "../../context/WizardContext";
 
 type WizardStepProps = {
   stepIndex: number;

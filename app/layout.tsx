@@ -4,7 +4,7 @@ import { MuseoModerno } from "next/font/google";
 import Script from "next/script";
 import { Footer } from "@/components/ui/footer";
 import Header from "@/components/ui/Header";
-import { HeaderProvider } from "./context/HeaderContext";
+import { HeaderProvider } from "../context/HeaderContext";
 
 const museoModerno = MuseoModerno({
   weight: "500",

@@ -5,10 +5,10 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ZodEnum, ZodNumber } from "zod";
-import { WizardProvider } from "@/components/WizardContext";
-import { StepGenerator } from "@/components/WizardStepGenerator";
-import { WizardStep } from "@/components/WizardStep";
-import { useHeader } from "../../context/HeaderContext";
+import { WizardProvider } from "@/context/WizardContext";
+import { StepGenerator } from "@/components/wizard/WizardStepGenerator";
+import { WizardStep } from "@/components/wizard/WizardStep";
+import { useHeader } from "../../../context/HeaderContext";
 import axios from "axios";
 import { StaticImageData } from "next/image";
 

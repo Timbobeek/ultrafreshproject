@@ -1,8 +1,7 @@
 import { Form } from "@/components/ui/form";
-import { useWizard } from "./WizardContext";
+import { useWizard } from "../../context/WizardContext";
 import { FieldPath, FieldValues } from "react-hook-form";
 import React from "react";
-import { Path } from "react-hook-form";
 import { StaticImageData } from "next/image";
 import WizardRadioInput from "./WizardRadioInput";
 import WizardCheckboxInput, { CheckboxField } from "./WizardCheckboxInput";
