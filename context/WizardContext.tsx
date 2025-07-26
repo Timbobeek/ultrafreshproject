@@ -1,13 +1,10 @@
 import { createContext, useContext, useState } from "react";
 import { FormProvider, UseFormReturn, FieldValues } from "react-hook-form";
 
-export type WizardContextMethods<T extends FieldValues = FieldValues> =
-  UseFormReturn<T>;
-
 type WizardContextType<T extends FieldValues = FieldValues> = {
   step: number;
   setStep: React.Dispatch<React.SetStateAction<number>>;
-  methods: WizardContextMethods<T>;
+  methods: UseFormReturn<T>;
 };
 
 const WizardContext = createContext<WizardContextType<any> | undefined>(

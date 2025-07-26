@@ -9,7 +9,7 @@ export type CheckboxField<
   T extends FieldValues = FieldValues,
   Name extends FieldPath<T> = FieldPath<T>
 > = {
-  name: Name; // apprently, this stands for name: string | number | symbol
+  name: Name;
   label: string;
 };
 
@@ -48,7 +48,6 @@ function WizardCheckboxInput<
   checkboxFields,
   fieldsToTrigger,
 }: Props<T, Name>) {
-  console.log("name cbx", name);
   return (
     <FormField
       name={name}
@@ -66,7 +65,6 @@ function WizardCheckboxInput<
           />
           <div className="flex justify-center">
             {checkboxFields?.map((cb) => {
-              console.log("inside", cb);
               return (
                 <FormField
                   key={cb.name}

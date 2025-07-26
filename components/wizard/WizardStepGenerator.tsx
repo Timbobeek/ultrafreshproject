@@ -57,8 +57,6 @@ export function StepGenerator<
 
   const handleSubmit = methods.handleSubmit((data, e) => onSubmit?.(data, e));
 
-  console.log("name", name);
-
   const renderInput = () => {
     switch (type) {
       case "radio":

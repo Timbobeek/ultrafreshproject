@@ -37,7 +37,6 @@ import stepTwentyTwo from "../../../public/generalSurvey/klopp.jpg";
 
 const apiKey = process.env.NEXT_PUBLIC_API_KEY;
 
-// WizardData and fullSchema
 type WizardData = {
   name: string;
   position: "Goalkeeper" | "Defender" | "Midfielder" | "Forward";
@@ -385,7 +384,7 @@ export default function GeneralSurveyPage() {
           options={step.options}
           checkboxFields={step.checkboxFields}
           isFinalStep={step.number === wizardStepsContent.length}
-          isFirstStep={step.number === 1} //is it always 1???
+          isFirstStep={step.number === 1}
           onSubmit={(data, e) => {
             console.log("submitted", data);
             e?.preventDefault();
