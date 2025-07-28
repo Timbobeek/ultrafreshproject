@@ -53,7 +53,7 @@ function WizardCheckboxInput<
       name={name}
       control={methods.control}
       render={({ fieldState }) => (
-        <FormItem className="w-[900px]">
+        <FormItem className="">
           <WizardStepImage image={image} />
           <WizardStepNavigation
             label={label}

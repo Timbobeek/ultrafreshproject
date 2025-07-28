@@ -6,7 +6,7 @@ type StepImageProps = {
 };
 
 const StepImage = ({ image }: StepImageProps) => (
-  <div className="relative h-[500px] overflow-hidden">
+  <div className="relative overflow-hidden rounded-lg h-[250px] sm:h-[300px] md:h-[400px] lg:h-[500px]">
     <Image
       src={image}
       alt="step image"
