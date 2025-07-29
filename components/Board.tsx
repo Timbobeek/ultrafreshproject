@@ -25,7 +25,7 @@ export default function Board(props: Props) {
     >
       <div
         className={cn(
-          "rounded-xl hover-hover:group-hover:bg-foreground hover-hover:group-hover:translate-x-28 sm:hover-hover:group-hover:translate-x-40 lg:hover-hover:group-hover:translate-x-80 duration-1000 px-2",
+          "rounded-xl hover-hover:group-hover:bg-foreground hover-hover:group-hover:translate-x-28 sm:hover-hover:group-hover:translate-x-40 lg:hover-hover:group-hover:translate-x-60 duration-1000 px-2",
           props.backgroundColor
         )}
       >
