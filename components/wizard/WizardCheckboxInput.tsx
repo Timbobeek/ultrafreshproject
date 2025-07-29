@@ -63,7 +63,7 @@ function WizardCheckboxInput<
             onNext={onNext}
             onSubmit={onSubmit}
           />
-          <div className="flex justify-center">
+          <div className="flex justify-center flex-wrap h-12">
             {checkboxFields?.map((cb) => {
               return (
                 <FormField
@@ -71,11 +71,9 @@ function WizardCheckboxInput<
                   name={cb.name}
                   control={methods.control}
                   render={({ field }) => (
-                    <FormItem
-                      className={cn("mx-1 h-12 content-center", textSize)}
-                    >
+                    <FormItem className={cn(" flex", textSize)}>
                       <input
-                        className="w-4 h-4 mx-1 accent-background"
+                        className="w-4 h-4 sm:w-5 sm:h-5 mx-1 accent-background"
                         type="checkbox"
                         name={field.name}
                         ref={field.ref}

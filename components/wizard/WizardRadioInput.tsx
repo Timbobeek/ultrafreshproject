@@ -64,14 +64,14 @@ function WizardRadioInput<
             onSubmit={onSubmit}
           />
           <FormControl>
-            <div className={cn("h-12 content-center text-2xl", textSize)}>
+            <div className={cn("h-12 content-center flex-wrap", textSize)}>
               {options?.map((val) => (
                 <label
                   key={val.name}
-                  className="text-black accent-background mx-1"
+                  className="text-black accent-background mx-1 whitespace-nowrap"
                 >
                   <input
-                    className="w-8 h-8"
+                    className="w-7 h-7"
                     type="radio"
                     value={val.name}
                     checked={field.value === val.name}
