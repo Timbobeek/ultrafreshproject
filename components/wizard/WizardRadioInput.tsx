@@ -10,6 +10,11 @@ import { StaticImageData } from "next/image";
 import { cn } from "@/lib/utils";
 import { FieldPath, FieldValues, UseFormReturn } from "react-hook-form";
 
+export type RadioOption = {
+  name: string;
+  label: string;
+};
+
 type Props<
   T extends FieldValues = FieldValues,
   Name extends FieldPath<T> = FieldPath<T>
@@ -24,7 +29,7 @@ type Props<
   onNext: () => void;
   onSubmit: () => void;
   textSize: string;
-  options?: string[];
+  options?: RadioOption[];
 };
 
 function WizardRadioInput<
@@ -48,7 +53,7 @@ function WizardRadioInput<
       name={name}
       control={methods.control}
       render={({ field }) => (
-        <FormItem className="w-[900px]">
+        <FormItem className="">
           <WizardStepImage image={image} />
           <WizardStepNavigation
             label={label}
@@ -59,17 +64,20 @@ function WizardRadioInput<
             onSubmit={onSubmit}
           />
           <FormControl>
-            <div className={cn("h-12 content-center text-2xl", textSize)}>
+            <div className={cn("h-12 content-center flex-wrap", textSize)}>
               {options?.map((val) => (
-                <label key={val} className="text-black accent-background mx-1">
+                <label
+                  key={val.name}
+                  className="text-black accent-background mx-1 whitespace-nowrap"
+                >
                   <input
-                    className="w-8 h-8"
+                    className="w-7 h-7"
                     type="radio"
-                    value={val}
-                    checked={field.value === val}
-                    onChange={() => field.onChange(val)}
+                    value={val.name}
+                    checked={field.value === val.name}
+                    onChange={() => field.onChange(val.name)}
                   />
-                  <span className="capitalize ml-1">{val}</span>
+                  <span className="capitalize ml-1">{val.label}</span>
                 </label>
               ))}
             </div>

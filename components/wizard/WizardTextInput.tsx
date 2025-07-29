@@ -46,7 +46,7 @@ function WizardTextInput<
       name={name}
       control={methods.control}
       render={({ field }) => (
-        <FormItem className="w-[900px]">
+        <FormItem className="">
           <WizardStepImage image={image} />
           <WizardStepNavigation
             label={label}

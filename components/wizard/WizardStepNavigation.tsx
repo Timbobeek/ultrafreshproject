@@ -26,14 +26,16 @@ export function WizardStepNavigation({
         <Button
           variant="pagination"
           className={cn(
-            "text-black hover:text-background",
+            "text-black hover:text-background px-0",
             isFirstStep && "invisible pointer-events-none"
           )}
           onClick={onBack}
         >
           <ChevronLeft className="w-12 h-12" />
         </Button>
-        <FormLabel className="!text-medium text-black my-2">{label}</FormLabel>
+        <FormLabel className="text-md sm:text-xl md:text-3xl text-black my-1">
+          {label}
+        </FormLabel>
         {isFinalStep ? (
           <Button variant="submit" type="submit" onClick={onSubmit}>
             <Rocket />
@@ -41,7 +43,7 @@ export function WizardStepNavigation({
         ) : (
           <Button
             variant="pagination"
-            className="text-black hover:text-background"
+            className="text-black hover:text-background px-0"
             onClick={onNext}
           >
             <ChevronRight className="w-12 h-12" />

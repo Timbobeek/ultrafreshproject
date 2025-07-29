@@ -11,6 +11,7 @@ import { WizardStep } from "@/components/wizard/WizardStep";
 import { useHeader } from "../../../context/HeaderContext";
 import axios from "axios";
 import { StaticImageData } from "next/image";
+import { RadioOption } from "@/components/wizard/WizardRadioInput";
 
 import stepOne from "../../../public/generalSurvey/vennegor.jpg";
 import stepTwo from "../../../public/generalSurvey/Soccer-Formation~.png";
@@ -129,7 +130,7 @@ const wizardStepsContent: {
   name: keyof WizardData;
   label: string;
   number: number;
-  options?: string[];
+  options?: RadioOption[];
   type?: "string" | "number" | "radio" | "checkbox";
   checkboxFields?: { name: keyof WizardData; label: string }[];
   textSize: string;
@@ -146,7 +147,12 @@ const wizardStepsContent: {
     name: "position",
     label: "Favorite position to play?",
     number: 2,
-    options: ["Goalkeeper", "Defender", "Midfielder", "Forward"],
+    options: [
+      { name: "Goalkeeper", label: "GK" },
+      { name: "Defender", label: "DF" },
+      { name: "Midfielder", label: "MF" },
+      { name: "Forward", label: "FW" },
+    ],
     type: "radio",
     textSize: "text-2xl",
   },
@@ -163,11 +169,11 @@ const wizardStepsContent: {
     label: "Messi or Ronaldo?",
     number: 4,
     options: [
-      "Messi",
-      "Ronaldo",
-      "Like and respect both",
-      "Dislike both",
-      "Don't care",
+      { name: "Messi", label: "Messi" },
+      { name: "Ronaldo", label: "Ronaldo" },
+      { name: "Like and respect both", label: "Both" },
+      { name: "Dislike both", label: "Neither" },
+      { name: "Don't care", label: "Don't care" },
     ],
     type: "radio",
     textSize: "text-lg",
@@ -256,7 +262,7 @@ const wizardStepsContent: {
       { name: "semipro", label: "Semi-Pro" },
       { name: "pro", label: "Pro" },
     ],
-    textSize: "text-lg",
+    textSize: "text-sm sm:text-lg",
   },
   {
     image: stepSixteen,
@@ -298,7 +304,11 @@ const wizardStepsContent: {
     name: "jabu",
     label: "Opinion on Jabulani?",
     number: 21,
-    options: ["Trash", "Enjoyable", "No idea"],
+    options: [
+      { name: "Trash", label: "Trash" },
+      { name: "Enjoyable", label: "Enjoyable" },
+      { name: "No idea", label: "No idea" },
+    ],
     type: "radio",
     textSize: "text-2xl",
   },
@@ -403,7 +413,7 @@ export default function GeneralSurveyPage() {
 
   return (
     <div className="flex flex-col items-center">
-      <div className="p-2 rounded-xl bg-foreground">
+      <div className="p-1 md:p-2 rounded-xl bg-foreground w-full">
         <WizardProvider<WizardData> methods={methods}>
           {stepsContentMapper}
         </WizardProvider>
