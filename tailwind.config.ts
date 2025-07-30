@@ -25,17 +25,39 @@ const config: Config = {
         small: "1.3em",
       },
       backgroundColor: {
-        // these are not random names, but what they will be responsible for
         standard: "rgb(60 60 60)",
       },
       backgroundPosition: {
         start: "0% 80%",
         finish: "0% 30%",
       },
+      keyframes: {
+        "accordion-down": {
+          from: {
+            height: "0",
+          },
+          to: {
+            height: "var(--radix-accordion-content-height)",
+          },
+        },
+        "accordion-up": {
+          from: {
+            height: "var(--radix-accordion-content-height)",
+          },
+          to: {
+            height: "0",
+          },
+        },
+      },
+      animation: {
+        "accordion-down": "accordion-down 0.2s ease-out",
+        "accordion-up": "accordion-up 0.2s ease-out",
+      },
     },
   },
   plugins: [
     require("tailwindcss-animate"),
+    require("tailwind-scrollbar")({ nocompatible: true }),
     plugin(({ addVariant }) => {
       addVariant("hover-hover", "@media (hover: hover) and (pointer: fine)");
     }),
