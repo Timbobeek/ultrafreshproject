@@ -4,7 +4,6 @@ import SingleAccordion from "@/components/SingleAccordion";
 import { useEffect, useState } from "react";
 import { useHeader } from "@/context/HeaderContext";
 import axios from "axios";
-import { ArrowBigRight } from "lucide-react";
 
 const apiKey = process.env.NEXT_PUBLIC_API_KEY;
 
@@ -105,10 +104,9 @@ export default function ResultsPage() {
           title: member.name,
           content: member.answers.map((person) =>
             person.label !== "name" ? (
-              <div className="flex justify-center">
-                <p className=" text-background">{person.label}</p>
-                <ArrowBigRight className="text-background" />
-                <p className=" text-foreground">{person.data}</p>
+              <div className="flex justify-center flex-col md:flex-row items-center md:items-normal my-2 md:my-0">
+                <p className="text-background mx-2">{person.label}</p>
+                <p className=" text-foreground ">{person.data}</p>
               </div>
             ) : (
               <></>
