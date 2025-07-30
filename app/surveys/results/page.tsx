@@ -7,11 +7,61 @@ import axios from "axios";
 
 const apiKey = process.env.NEXT_PUBLIC_API_KEY;
 
-function label(text, key) {
+type LabelKey =
+  | "name"
+  | "position"
+  | "favplayer"
+  | "mr"
+  | "favclub"
+  | "natteam"
+  | "favleague"
+  | "favjersey"
+  | "favmemspec"
+  | "wrsmemspec"
+  | "favmemplr"
+  | "wrsmemplr"
+  | "age"
+  | "why"
+  | "levels"
+  | "achv"
+  | "goals"
+  | "advc"
+  | "clt"
+  | "ball"
+  | "jabu"
+  | "love";
+
+type LabelEntry = {
+  text: string;
+  key: LabelKey;
+};
+
+type ResultsData = {
+  [K in LabelKey]?: string;
+} & {
+  amateur?: boolean;
+  hs?: boolean;
+  acad?: boolean;
+  college?: boolean;
+  semipro?: boolean;
+  pro?: boolean;
+};
+
+type MemberAnswer = {
+  label: string;
+  data?: string;
+};
+
+type MemberResult = {
+  name: string;
+  answers: MemberAnswer[];
+};
+
+function label(text: string, key: LabelKey): LabelEntry {
   return { text, key };
 }
 
-const orderedKeys = [
+const orderedKeys: LabelEntry[] = [
   label("name", "name"),
   label("Favorite position", "position"),
   label("Favorite player", "favplayer"),
@@ -26,7 +76,7 @@ const orderedKeys = [
   label("Worst memory as a player", "wrsmemplr"),
   label("I started playing at", "age"),
   label("I started playing because", "why"),
-  label("Levels I played at", "levels"), //["amateur","hs","acad", "college", "semipro",'pro'),
+  label("Levels I played at", "levels"),
   label("My biggest achievement is", "achv"),
   label("My futbol-related goal is", "goals"),
   label("Best futbol advice I have received", "advc"),
@@ -36,9 +86,16 @@ const orderedKeys = [
   label("Best compliment I received", "love"),
 ];
 
-function getLevels(row) {
-  const levelKeys = ["amateur", "hs", "acad", "college", "semipro", "pro"];
-  const levelNames = {
+function getLevels(results: ResultsData): string {
+  const levelKeys = [
+    "amateur",
+    "hs",
+    "acad",
+    "college",
+    "semipro",
+    "pro",
+  ] as const;
+  const levelNames: Record<(typeof levelKeys)[number], string> = {
     amateur: "Amateur",
     hs: "High School",
     acad: "Academy",
@@ -46,12 +103,13 @@ function getLevels(row) {
     semipro: "Semi-Pro",
     pro: "Pro",
   };
-  const foundLevels = levelKeys.filter((level) => row[level]);
-  return foundLevels.map((level) => levelNames[level] ?? "").join(", ");
+  const foundLevels = levelKeys.filter((level) => results[level]);
+  return foundLevels.map((level) => levelNames[level]).join(", ");
 }
 
 export default function ResultsPage() {
   const [, setHeader] = useHeader();
+  const [data, setData] = useState<MemberResult[]>([]);
 
   useEffect(() => {
     setHeader({
@@ -62,8 +120,6 @@ export default function ResultsPage() {
     });
   }, []);
 
-  const [data, setData] = useState([]);
-
   useEffect(() => {
     axios({
       url: `https://ferrata-crud2.builtwithdark.com/v1/surveys/`,
@@ -73,18 +129,18 @@ export default function ResultsPage() {
       },
     })
       .then((res) => {
-        const list = Object.values(res.data);
-        const result = list.map((row) => {
-          const member = {
-            name: row["name"],
+        const list: ResultsData[] = Object.values(res.data);
+        const result: MemberResult[] = list.map((row) => {
+          const member: MemberResult = {
+            name: row["name"] ?? "Unknown",
             answers: [],
           };
 
           orderedKeys.forEach((label) => {
-            const data =
+            const value =
               label.key === "levels" ? getLevels(row) : row[label.key];
 
-            member.answers.push({ label: label.text, data });
+            member.answers.push({ label: label.text, data: value });
           });
 
           return member;
@@ -104,7 +160,10 @@ export default function ResultsPage() {
           title: member.name,
           content: member.answers.map((person) =>
             person.label !== "name" ? (
-              <div className="flex justify-center flex-col md:flex-row items-center md:items-normal my-2 md:my-0">
+              <div
+                key={person.label}
+                className="flex justify-center flex-col md:flex-row items-center md:items-normal my-2 md:my-0"
+              >
                 <p className="text-background mx-2">{person.label}</p>
                 <p className=" text-foreground ">{person.data}</p>
               </div>

@@ -38,7 +38,7 @@ import stepTwentyTwo from "../../../public/generalSurvey/klopp.jpg";
 
 const apiKey = process.env.NEXT_PUBLIC_API_KEY;
 
-type WizardData = {
+export type WizardData = {
   name: string;
   position: "Goalkeeper" | "Defender" | "Midfielder" | "Forward";
   favplayer: string;
