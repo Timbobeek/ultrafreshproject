@@ -34,13 +34,13 @@ export default function Page() {
       link: "/surveys/injuries",
     },
     {
-      title: "world cups",
+      title: "results",
       text: "text-black",
       image: "bg-[url('../public/surveyBoards/ronaldo.jpg')]",
       borderColor: "border-lime-300",
       backgroundColor: "bg-lime-300/75",
       hover: "",
-      link: "",
+      link: "/surveys/results",
     },
   ];
 
