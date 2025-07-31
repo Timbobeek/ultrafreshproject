@@ -12,12 +12,10 @@ export default function Header() {
         {headerData.title}
       </h1>
 
-      {headerData.subtext !== null ? (
+      {headerData.subtext != null && (
         <div className="bg-standard bg-opacity-70 text-foreground rounded-lg p-4 sm:w-[500px] flex justify-center text-center sm:text-small whitespace-pre-line">
           {headerData.subtext}
         </div>
-      ) : (
-        <div></div>
       )}
 
       {headerData.button ? (
