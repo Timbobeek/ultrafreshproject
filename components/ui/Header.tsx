@@ -6,6 +6,7 @@ import { PaginationPrevious } from "./Pagination";
 
 export default function Header() {
   const [headerData] = useHeader();
+  console.log(headerData.button);
   return (
     <header className=" text-foreground flex flex-col items-center justify-center">
       <h1 className="font-bold  text-5xl sm:text-large m-5">
@@ -18,11 +19,7 @@ export default function Header() {
         </div>
       )}
 
-      {headerData.button ? (
-        <Button className="m-3" variant={"destructive"}>
-          Sign In
-        </Button>
-      ) : (
+      {!headerData.button && (
         <PaginationPrevious
           title="Back"
           className="text-large text-foreground"
