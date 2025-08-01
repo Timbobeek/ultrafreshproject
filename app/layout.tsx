@@ -38,7 +38,7 @@ export default function RootLayout({
         <HeaderProvider>
           <Header />
 
-          <main className="flex-1 flex justify-center items-center w-5/6 sm:w-3/4 xl:w-[900px]">
+          <main className="flex-1 flex flex-col justify-center items-center w-5/6 sm:w-3/4 xl:w-[900px]">
             <ClerkWrapper>
               <div className="w-full max-w-5xl text-center">{children}</div>
             </ClerkWrapper>
