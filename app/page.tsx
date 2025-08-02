@@ -3,13 +3,31 @@
 import Board from "@/components/Board";
 import { useEffect } from "react";
 import { useHeader } from "../context/HeaderContext";
+import { SignedIn, UserButton } from "@clerk/nextjs";
 
 export default function Home() {
   const [, setHeader] = useHeader();
 
   useEffect(() => {
     setHeader({
-      title: "Welcome!",
+      title: (
+        <div className="text-center">
+          Welcome<br></br>
+          <div className="leading-[0.2]">
+            <SignedIn>
+              <UserButton
+                showName
+                appearance={{
+                  elements: {
+                    userButtonOuterIdentifier: "text-xl md:text-3xl",
+                    userButtonBox: "text-foreground",
+                  },
+                }}
+              />
+            </SignedIn>
+          </div>
+        </div>
+      ),
       subtext:
         "to FutbolSurvey,\na page built to get to know my fellow\n ⚽futbol/soccer/football⚽ enjoyers",
       button: true,
@@ -49,7 +67,9 @@ export default function Home() {
 
   return (
     <div className="flex flex-col">
-      {homeBoardsContent.map((board) => Board(board))}
+      {homeBoardsContent.map((board, i) => (
+        <Board key={i} {...board} />
+      ))}
     </div>
   );
 }

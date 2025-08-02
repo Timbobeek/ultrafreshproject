@@ -1,6 +1,6 @@
 "use client";
 
-import { SignIn } from "@clerk/nextjs";
+import { SignUp } from "@clerk/nextjs";
 import { useEffect } from "react";
 import { useHeader } from "@/context/HeaderContext";
 
@@ -18,7 +18,7 @@ export default function Page() {
   }, []);
   return (
     <div className="flex justify-center">
-      <SignIn
+      <SignUp
         appearance={{
           elements: {
             card: "bg-foreground",
