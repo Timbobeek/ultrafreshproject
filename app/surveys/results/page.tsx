@@ -155,24 +155,24 @@ export default function ResultsPage() {
 
   return (
     <>
-      {data.map((member) =>
-        SingleAccordion({
-          title: member.name,
-          content: member.answers.map((person) =>
-            person.label !== "name" ? (
-              <div
-                key={person.label}
-                className="flex justify-center flex-col md:flex-row items-center md:items-normal my-2 md:my-0"
-              >
-                <p className="text-background mx-2">{person.label}</p>
-                <p className=" text-foreground ">{person.data}</p>
-              </div>
-            ) : (
-              <></>
-            )
-          ),
-        })
-      )}
+      {data.map((member, i) => (
+        <SingleAccordion
+          key={i}
+          title={member.name}
+          content={member.answers.map(
+            (person) =>
+              person.label !== "name" && (
+                <div
+                  key={person.label}
+                  className="flex justify-center flex-col md:flex-row items-center md:items-normal my-2 md:my-0"
+                >
+                  <p className="text-background mx-2">{person.label}</p>
+                  <p className=" text-foreground ">{person.data}</p>
+                </div>
+              )
+          )}
+        />
+      ))}
     </>
   );
 }

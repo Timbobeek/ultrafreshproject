@@ -1,7 +1,6 @@
 "use client";
 
 import { useHeader } from "@/context/HeaderContext";
-import { Button } from "./button";
 import { PaginationPrevious } from "./Pagination";
 
 export default function Header() {
@@ -18,11 +17,7 @@ export default function Header() {
         </div>
       )}
 
-      {headerData.button ? (
-        <Button className="m-3" variant={"destructive"}>
-          Sign In
-        </Button>
-      ) : (
+      {!headerData.button && (
         <PaginationPrevious
           title="Back"
           className="text-large text-foreground"

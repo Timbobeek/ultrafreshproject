@@ -51,7 +51,9 @@ export default function Page() {
 
   return (
     <div className="flex flex-col">
-      {homeBoardsContent.map((board) => Board(board))}
+      {homeBoardsContent.map((board, i) => (
+        <Board key={i} {...board} />
+      ))}
     </div>
   );
 }

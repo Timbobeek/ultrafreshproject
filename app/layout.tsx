@@ -5,6 +5,7 @@ import Script from "next/script";
 import { Footer } from "@/components/ui/footer";
 import Header from "@/components/ui/Header";
 import { HeaderProvider } from "../context/HeaderContext";
+import { ClerkProvider } from "@clerk/nextjs";
 
 const museoModerno = MuseoModerno({
   weight: "500",
@@ -35,13 +36,15 @@ export default function RootLayout({
         className={` bg-[url('../public/images/futbolbackground.jpg')] bg-center bg-no-repeat bg-cover bg-fixed min-h-screen flex flex-col items-center`}
       >
         <HeaderProvider>
-          <Header />
+          <ClerkProvider>
+            <Header />
 
-          <main className="flex-1 flex justify-center items-center w-5/6 sm:w-3/4 xl:w-[900px]">
-            <div className="w-full max-w-5xl text-center">{children}</div>
-          </main>
+            <main className="flex-1 flex flex-col justify-center items-center w-5/6 sm:w-3/4 xl:w-[900px]">
+              <div className="w-full max-w-5xl text-center">{children}</div>
+            </main>
 
-          <Footer />
+            <Footer />
+          </ClerkProvider>
         </HeaderProvider>
       </body>
     </html>
