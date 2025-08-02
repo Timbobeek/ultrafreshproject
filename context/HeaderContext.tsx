@@ -1,19 +1,20 @@
 // context/HeaderContext.tsx
-'use client';
+"use client";
 
-import { createContext, useContext, useState, ReactNode } from 'react';
+import { createContext, useContext, useState, ReactNode } from "react";
 
 type HeaderData = {
-  title?: string;
+  title?: ReactNode;
   subtext?: string | null;
   button?: boolean;
   redirect?: string;
   // add more as needed
 };
 
-const HeaderContext = createContext<
-  [HeaderData, (data: HeaderData) => void]
->([{ title: '' }, () => {}]);
+const HeaderContext = createContext<[HeaderData, (data: HeaderData) => void]>([
+  { title: "" },
+  () => {},
+]);
 
 export function HeaderProvider({ children }: { children: ReactNode }) {
   const [headerData, setHeaderData] = useState<HeaderData>({});
@@ -25,4 +26,3 @@ export function HeaderProvider({ children }: { children: ReactNode }) {
 }
 
 export const useHeader = () => useContext(HeaderContext);
-
