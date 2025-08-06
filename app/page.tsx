@@ -55,13 +55,13 @@ export default function Home() {
       link: "/discussions",
     },
     {
-      title: "images",
+      title: "quizzes",
       text: "text-black",
       image: "bg-[url('../public/surveyBoards/khvicha.jpg')]",
       borderColor: "border-pink-300",
       backgroundColor: "bg-pink-300/75",
       hover: "",
-      link: "/images",
+      link: "/quizzes",
     },
   ];
 
