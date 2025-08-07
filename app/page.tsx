@@ -48,7 +48,7 @@ export default function Home() {
     {
       title: "discussions",
       text: "text-black",
-      image: "bg-[url('../public/surveyBoards/sheva.jpg')]",
+      image: "bg-[url('../public/surveyBoards/shevchenko.png')]",
       borderColor: "border-blue-300",
       backgroundColor: "bg-blue-300/75",
       hover: "",
