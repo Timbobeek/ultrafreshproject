@@ -348,7 +348,7 @@ export default function GeneralSurveyPage() {
       wrsmemspec: "",
       favmemplr: "",
       wrsmemplr: "",
-      age: undefined,
+      age: "" as unknown as number,
       why: "",
       amateur: false,
       hs: false,

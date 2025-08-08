@@ -36,7 +36,7 @@ export default function Page() {
       link: "",
     },
     {
-      title: "arsenal",
+      title: "injuries",
       text: "text-black",
       image: "bg-[url('../public/surveyBoards/drogba.webp')]",
       borderColor: "border-lime-300",

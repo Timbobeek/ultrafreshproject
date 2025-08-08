@@ -15,7 +15,7 @@ export default function InjuriesSurvey() {
 
   useEffect(() => {
     setHeader({
-      title: "Injuries Survey",
+      title: "Survey #2",
       subtext: null,
       button: false,
       redirect: "/surveys",

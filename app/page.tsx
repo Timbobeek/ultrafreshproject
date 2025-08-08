@@ -21,6 +21,13 @@ export default function Home() {
                   elements: {
                     userButtonOuterIdentifier: "text-xl md:text-3xl",
                     userButtonBox: "text-foreground",
+                    userButtonPopoverCard: "w-[300px] sm:w-[400px]",
+                    userButtonPopoverActions: "bg-foreground",
+                    userButtonPopoverMain: "bg-foreground",
+                    userButtonPopoverActionButton__manageAccount:
+                      "hover:bg-background text-black",
+                    userButtonPopoverActionButton__signOut:
+                      "hover:bg-background text-black",
                   },
                 }}
               />
@@ -48,20 +55,20 @@ export default function Home() {
     {
       title: "discussions",
       text: "text-black",
-      image: "bg-[url('../public/surveyBoards/sheva.jpg')]",
+      image: "bg-[url('../public/surveyBoards/shevchenko.png')]",
       borderColor: "border-blue-300",
       backgroundColor: "bg-blue-300/75",
       hover: "",
       link: "/discussions",
     },
     {
-      title: "images",
+      title: "quizzes",
       text: "text-black",
       image: "bg-[url('../public/surveyBoards/khvicha.jpg')]",
       borderColor: "border-pink-300",
       backgroundColor: "bg-pink-300/75",
       hover: "",
-      link: "/images",
+      link: "/quizzes",
     },
   ];
 
