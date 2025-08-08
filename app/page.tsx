@@ -21,6 +21,13 @@ export default function Home() {
                   elements: {
                     userButtonOuterIdentifier: "text-xl md:text-3xl",
                     userButtonBox: "text-foreground",
+                    userButtonPopoverCard: "w-[300px] sm:w-[400px]",
+                    userButtonPopoverActions: "bg-foreground",
+                    userButtonPopoverMain: "bg-foreground",
+                    userButtonPopoverActionButton__manageAccount:
+                      "hover:bg-background text-black",
+                    userButtonPopoverActionButton__signOut:
+                      "hover:bg-background text-black",
                   },
                 }}
               />

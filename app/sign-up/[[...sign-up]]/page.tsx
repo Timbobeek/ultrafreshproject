@@ -24,7 +24,7 @@ export default function Page() {
             card: "bg-foreground p-6",
             formButtonPrimary: "bg-black text-foreground",
             socialButtonsBlockButton: "bg-background text-black",
-            cardBox: "w-[300px]",
+            cardBox: "w-[300px] sm:w-[400px]",
             main: "gap-1",
             form: "gap-2",
           },
