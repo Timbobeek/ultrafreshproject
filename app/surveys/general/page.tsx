@@ -35,6 +35,7 @@ import stepNineteen from "../../../public/generalSurvey/nike-total-90-laser-i-re
 import stepTwenty from "../../../public/generalSurvey/brazuca.jpg";
 import stepTwentyOne from "../../../public/generalSurvey/jabulani.avif";
 import stepTwentyTwo from "../../../public/generalSurvey/klopp.jpg";
+import submitted from "../../../public/generalSurvey/celebration.jpg";
 
 const apiKey = process.env.NEXT_PUBLIC_API_KEY;
 
@@ -127,13 +128,13 @@ const fullSchema = baseSchema.refine(
 
 const wizardStepsContent: {
   image: StaticImageData;
-  name: keyof WizardData;
+  name: keyof WizardData; //make this not mandatory
   label: string;
   number: number;
   options?: RadioOption[];
   type?: "string" | "number" | "radio" | "checkbox";
   checkboxFields?: { name: keyof WizardData; label: string }[];
-  textSize: string;
+  textSize: string; //make this not mandatory
 }[] = [
   {
     image: stepOne,
@@ -319,6 +320,14 @@ const wizardStepsContent: {
     number: 22,
     textSize: "",
   },
+  {
+    image: submitted,
+    name: "",
+    label:
+      "Your answers have been submitted! Thank you for sharing your journey with me. See you on the field!",
+    number: 23,
+    textSize: "",
+  },
 ];
 
 export default function GeneralSurveyPage() {
@@ -372,7 +381,8 @@ export default function GeneralSurveyPage() {
     const fieldSchema =
       baseSchema.shape[step.name as keyof typeof baseSchema.shape];
 
-    let type: "string" | "number" | "radio" | "checkbox" = "string";
+    let type: "submitted" | "string" | "number" | "radio" | "checkbox" =
+      "string";
 
     if (step.type) {
       type = step.type;
@@ -380,7 +390,11 @@ export default function GeneralSurveyPage() {
       type = "radio";
     } else if (fieldSchema instanceof ZodNumber) {
       type = "number";
+    } else if (step.number === wizardStepsContent.length) {
+      type = "submitted";
     }
+
+    //console.log(step.number, wizardStepsContent.length);
 
     return (
       <WizardStep key={step.number} stepIndex={step.number - 1}>
@@ -393,18 +407,18 @@ export default function GeneralSurveyPage() {
           type={type}
           options={step.options}
           checkboxFields={step.checkboxFields}
-          isFinalStep={step.number === wizardStepsContent.length}
+          isFinalStep={step.number === wizardStepsContent.length - 1}
           isFirstStep={step.number === 1}
           onSubmit={(data, e) => {
             console.log("submitted", data);
-            e?.preventDefault();
-            axios.post(
-              "https://ferrata-crud2.builtwithdark.com/v1/surveys/",
-              data,
-              {
-                headers: { "x-api-key": apiKey },
-              }
-            );
+            // e?.preventDefault();
+            // axios.post(
+            //   "https://ferrata-crud2.builtwithdark.com/v1/surveys/",
+            //   data,
+            //   {
+            //     headers: { "x-api-key": apiKey },
+            //   }
+            // );
           }}
         />
       </WizardStep>

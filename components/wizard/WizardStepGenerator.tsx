@@ -6,6 +6,7 @@ import { StaticImageData } from "next/image";
 import WizardRadioInput, { RadioOption } from "./WizardRadioInput";
 import WizardCheckboxInput, { CheckboxField } from "./WizardCheckboxInput";
 import WizardTextInput from "./WizardTextInput";
+import WizardSubmittedPage from "./WizardSubmittedPage";
 
 export type StepGeneratorProps<
   T extends FieldValues = FieldValues,
@@ -16,7 +17,7 @@ export type StepGeneratorProps<
   label: string;
   number: number;
   textSize: string;
-  type: "string" | "number" | "radio" | "checkbox";
+  type: "submitted" | "string" | "number" | "radio" | "checkbox";
   options?: RadioOption[];
   checkboxFields?: CheckboxField<T>[];
   isFinalStep?: boolean;
@@ -55,10 +56,22 @@ export function StepGenerator<
     if (valid) setStep(number);
   }
 
-  const handleSubmit = methods.handleSubmit((data, e) => onSubmit?.(data, e));
+  const handleSubmit = methods.handleSubmit((data, e) => {
+    onSubmit?.(data, e), setStep(number);
+  });
 
   const renderInput = () => {
     switch (type) {
+      case "submitted":
+        return (
+          <WizardSubmittedPage
+            image={image}
+            name={name}
+            methods={methods}
+            label={label}
+            textSize={textSize}
+          />
+        );
       case "radio":
         return (
           <WizardRadioInput
