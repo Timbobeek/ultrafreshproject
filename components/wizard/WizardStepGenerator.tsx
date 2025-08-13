@@ -15,7 +15,7 @@ export type StepGeneratorProps<
   name: Name;
   label: string;
   number: number;
-  textSize: string;
+  className?: string;
   type: "string" | "number" | "radio" | "checkbox";
   options?: RadioOption[];
   checkboxFields?: CheckboxField<T>[];
@@ -32,7 +32,7 @@ export function StepGenerator<
   image,
   label,
   number,
-  textSize,
+  className,
   type,
   options,
   checkboxFields,
@@ -55,7 +55,9 @@ export function StepGenerator<
     if (valid) setStep(number);
   }
 
-  const handleSubmit = methods.handleSubmit((data, e) => onSubmit?.(data, e));
+  const handleSubmit = methods.handleSubmit((data, e) => {
+    onSubmit?.(data, e);
+  });
 
   const renderInput = () => {
     switch (type) {
@@ -71,7 +73,7 @@ export function StepGenerator<
             onBack={handleGoBack}
             onNext={handleGoNext}
             onSubmit={handleSubmit}
-            textSize={textSize}
+            className={className}
             options={options}
           />
         );
@@ -87,7 +89,7 @@ export function StepGenerator<
             onBack={handleGoBack}
             onNext={handleGoNext}
             onSubmit={handleSubmit}
-            textSize={textSize}
+            className={className}
             checkboxFields={checkboxFields}
             fieldsToTrigger={fieldsToTrigger}
           />
