@@ -28,7 +28,7 @@ type Props<
   onBack: () => void;
   onNext: () => void;
   onSubmit: () => void;
-  textSize: string;
+  className?: string;
   options?: RadioOption[];
 };
 
@@ -45,7 +45,7 @@ function WizardRadioInput<
   onBack,
   onNext,
   onSubmit,
-  textSize,
+  className,
   options,
 }: Props<T, Name>) {
   return (
@@ -64,7 +64,9 @@ function WizardRadioInput<
             onSubmit={onSubmit}
           />
           <FormControl>
-            <div className={cn("h-12 content-center flex-wrap", textSize)}>
+            <div
+              className={cn("h-12 content-center flex-wrap", className ?? "")}
+            >
               {options?.map((val) => (
                 <label
                   key={val.name}

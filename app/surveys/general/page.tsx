@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -36,6 +36,7 @@ import stepTwenty from "../../../public/generalSurvey/brazuca.jpg";
 import stepTwentyOne from "../../../public/generalSurvey/jabulani.avif";
 import stepTwentyTwo from "../../../public/generalSurvey/klopp.jpg";
 import submitted from "../../../public/generalSurvey/celebration.jpg";
+import WizardSubmittedPage from "@/components/wizard/WizardSubmittedPage";
 
 const apiKey = process.env.NEXT_PUBLIC_API_KEY;
 
@@ -128,20 +129,19 @@ const fullSchema = baseSchema.refine(
 
 const wizardStepsContent: {
   image: StaticImageData;
-  name: keyof WizardData; //make this not mandatory
+  name: keyof WizardData;
   label: string;
   number: number;
   options?: RadioOption[];
   type?: "string" | "number" | "radio" | "checkbox";
   checkboxFields?: { name: keyof WizardData; label: string }[];
-  textSize: string; //make this not mandatory
+  className?: string;
 }[] = [
   {
     image: stepOne,
     name: "name",
     label: "What's your name?",
     number: 1,
-    textSize: "",
   },
   {
     image: stepTwo,
@@ -155,14 +155,13 @@ const wizardStepsContent: {
       { name: "Forward", label: "FW" },
     ],
     type: "radio",
-    textSize: "text-2xl",
+    className: "text-2xl",
   },
   {
     image: stepThree,
     name: "favplayer",
     label: "Who's your favorite player?",
     number: 3,
-    textSize: "",
   },
   {
     image: stepFour,
@@ -177,77 +176,67 @@ const wizardStepsContent: {
       { name: "Don't care", label: "Don't care" },
     ],
     type: "radio",
-    textSize: "text-lg",
+    className: "text-lg",
   },
   {
     image: stepFive,
     name: "favclub",
     label: "Favorite club?",
     number: 5,
-    textSize: "",
   },
   {
     image: stepSix,
     name: "natteam",
     label: "Favorite national team?",
     number: 6,
-    textSize: "",
   },
   {
     image: stepSeven,
     name: "favleague",
     label: "Favorite league?",
     number: 7,
-    textSize: "",
   },
   {
     image: stepEight,
     name: "favjersey",
     label: "Favorite jersey you own?",
     number: 8,
-    textSize: "",
   },
   {
     image: stepNine,
     name: "favmemspec",
     label: "Favorite memory as a fan?",
     number: 9,
-    textSize: "",
   },
   {
     image: stepTen,
     name: "wrsmemspec",
     label: "Worst memory as a fan?",
     number: 10,
-    textSize: "",
   },
   {
     image: stepEleven,
     name: "favmemplr",
     label: "Favorite memory as a player?",
     number: 11,
-    textSize: "",
   },
   {
     image: stepTwelve,
     name: "wrsmemplr",
     label: "Worst memory as a player?",
     number: 12,
-    textSize: "",
   },
   {
     image: stepThirteen,
     name: "age",
     label: "When did you start playing?",
     number: 13,
-    textSize: "",
   },
   {
     image: stepFourteen,
     name: "why",
     label: "Why did you start playing?",
     number: 14,
-    textSize: "",
   },
   {
     image: stepFifteen,
@@ -263,42 +252,37 @@ const wizardStepsContent: {
       { name: "semipro", label: "Semi-Pro" },
       { name: "pro", label: "Pro" },
     ],
-    textSize: "text-sm sm:text-lg",
+    className: "text-sm sm:text-lg",
   },
   {
     image: stepSixteen,
     name: "achv",
     label: "Your biggest achievement?",
     number: 16,
-    textSize: "",
   },
   {
     image: stepSeventeen,
     name: "goals",
     label: "Any futbol-related goals?",
     number: 17,
-    textSize: "",
   },
   {
     image: stepEighteen,
     name: "advc",
     label: "Best futbol advice recieved?",
     number: 18,
-    textSize: "",
   },
   {
     image: stepNineteen,
     name: "clt",
     label: "Favorite pair of cleats?",
     number: 19,
-    textSize: "",
   },
   {
     image: stepTwenty,
     name: "ball",
     label: "Favorite ball?",
     number: 20,
-    textSize: "",
   },
   {
     image: stepTwentyOne,
@@ -311,27 +295,19 @@ const wizardStepsContent: {
       { name: "No idea", label: "No idea" },
     ],
     type: "radio",
-    textSize: "text-2xl",
+    className: "text-2xl",
   },
   {
     image: stepTwentyTwo,
     name: "love",
     label: "Best compliment received?",
     number: 22,
-    textSize: "",
-  },
-  {
-    image: submitted,
-    name: "",
-    label:
-      "Your answers have been submitted! Thank you for sharing your journey with me. See you on the field!",
-    number: 23,
-    textSize: "",
   },
 ];
 
 export default function GeneralSurveyPage() {
   const [, setHeader] = useHeader();
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   useEffect(() => {
     setHeader({
@@ -380,9 +356,7 @@ export default function GeneralSurveyPage() {
   const stepsContentMapper = wizardStepsContent.map((step) => {
     const fieldSchema =
       baseSchema.shape[step.name as keyof typeof baseSchema.shape];
-
-    let type: "submitted" | "string" | "number" | "radio" | "checkbox" =
-      "string";
+    let type: "string" | "number" | "radio" | "checkbox" = "string";
 
     if (step.type) {
       type = step.type;
@@ -390,11 +364,7 @@ export default function GeneralSurveyPage() {
       type = "radio";
     } else if (fieldSchema instanceof ZodNumber) {
       type = "number";
-    } else if (step.number === wizardStepsContent.length) {
-      type = "submitted";
     }
-
-    //console.log(step.number, wizardStepsContent.length);
 
     return (
       <WizardStep key={step.number} stepIndex={step.number - 1}>
@@ -403,22 +373,26 @@ export default function GeneralSurveyPage() {
           name={step.name}
           label={step.label}
           number={step.number}
-          textSize={step.textSize}
+          className={step.className}
           type={type}
           options={step.options}
           checkboxFields={step.checkboxFields}
-          isFinalStep={step.number === wizardStepsContent.length - 1}
+          isFinalStep={step.number === wizardStepsContent.length}
           isFirstStep={step.number === 1}
           onSubmit={(data, e) => {
             console.log("submitted", data);
-            // e?.preventDefault();
-            // axios.post(
-            //   "https://ferrata-crud2.builtwithdark.com/v1/surveys/",
-            //   data,
-            //   {
-            //     headers: { "x-api-key": apiKey },
-            //   }
-            // );
+
+            e?.preventDefault();
+            axios
+              .post(
+                "https://ferrata-crud2.builtwithdark.com/v1/surveys/",
+                data,
+                {
+                  headers: { "x-api-key": apiKey },
+                }
+              )
+              .then(() => setIsSubmitted(true));
+            // .catch(err => setError(err));
           }}
         />
       </WizardStep>
@@ -428,9 +402,18 @@ export default function GeneralSurveyPage() {
   return (
     <div className="flex flex-col items-center">
       <div className="p-1 md:p-2 rounded-xl bg-foreground w-full">
-        <WizardProvider<WizardData> methods={methods}>
-          {stepsContentMapper}
-        </WizardProvider>
+        {!isSubmitted && (
+          <WizardProvider<WizardData> methods={methods}>
+            {stepsContentMapper}
+          </WizardProvider>
+        )}
+
+        {isSubmitted && (
+          <WizardSubmittedPage
+            image={submitted}
+            label="Your answers have been submitted! Thank you for sharing your journey with me. See you on the field!"
+          />
+        )}
       </div>
     </div>
   );

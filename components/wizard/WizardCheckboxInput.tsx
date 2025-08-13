@@ -26,7 +26,7 @@ type Props<
   onBack: () => void;
   onNext: () => void;
   onSubmit: () => void;
-  textSize: string;
+  className?: string;
   checkboxFields?: CheckboxField<T>[];
   fieldsToTrigger: Path<T>[];
 };
@@ -44,7 +44,7 @@ function WizardCheckboxInput<
   onBack,
   onNext,
   onSubmit,
-  textSize,
+  className,
   checkboxFields,
   fieldsToTrigger,
 }: Props<T, Name>) {
@@ -71,7 +71,7 @@ function WizardCheckboxInput<
                   name={cb.name}
                   control={methods.control}
                   render={({ field }) => (
-                    <FormItem className={cn(" flex", textSize)}>
+                    <FormItem className={cn(" flex", className ?? "")}>
                       <input
                         className="w-4 h-4 sm:w-5 sm:h-5 mx-1 accent-background"
                         type="checkbox"

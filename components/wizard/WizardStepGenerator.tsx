@@ -6,7 +6,6 @@ import { StaticImageData } from "next/image";
 import WizardRadioInput, { RadioOption } from "./WizardRadioInput";
 import WizardCheckboxInput, { CheckboxField } from "./WizardCheckboxInput";
 import WizardTextInput from "./WizardTextInput";
-import WizardSubmittedPage from "./WizardSubmittedPage";
 
 export type StepGeneratorProps<
   T extends FieldValues = FieldValues,
@@ -16,8 +15,8 @@ export type StepGeneratorProps<
   name: Name;
   label: string;
   number: number;
-  textSize: string;
-  type: "submitted" | "string" | "number" | "radio" | "checkbox";
+  className?: string;
+  type: "string" | "number" | "radio" | "checkbox";
   options?: RadioOption[];
   checkboxFields?: CheckboxField<T>[];
   isFinalStep?: boolean;
@@ -33,7 +32,7 @@ export function StepGenerator<
   image,
   label,
   number,
-  textSize,
+  className,
   type,
   options,
   checkboxFields,
@@ -57,21 +56,11 @@ export function StepGenerator<
   }
 
   const handleSubmit = methods.handleSubmit((data, e) => {
-    onSubmit?.(data, e), setStep(number);
+    onSubmit?.(data, e);
   });
 
   const renderInput = () => {
     switch (type) {
-      case "submitted":
-        return (
-          <WizardSubmittedPage
-            image={image}
-            name={name}
-            methods={methods}
-            label={label}
-            textSize={textSize}
-          />
-        );
       case "radio":
         return (
           <WizardRadioInput
@@ -84,7 +73,7 @@ export function StepGenerator<
             onBack={handleGoBack}
             onNext={handleGoNext}
             onSubmit={handleSubmit}
-            textSize={textSize}
+            className={className}
             options={options}
           />
         );
@@ -100,7 +89,7 @@ export function StepGenerator<
             onBack={handleGoBack}
             onNext={handleGoNext}
             onSubmit={handleSubmit}
-            textSize={textSize}
+            className={className}
             checkboxFields={checkboxFields}
             fieldsToTrigger={fieldsToTrigger}
           />
