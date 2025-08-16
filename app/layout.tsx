@@ -34,7 +34,7 @@ export default function RootLayout({
         <link rel="icon" href="/fslogoBig.png" />
       </head>
       <body
-        className={` bg-[url('../public/images/futbolbackground.jpg')] bg-center bg-no-repeat bg-cover bg-fixed min-h-screen flex flex-col items-center`}
+        className={` bg-[url('../public/images/futbolbackground.jpg')] bg-center bg-no-repeat bg-cover bg-fixed flex flex-col items-center h-[100dvh]`}
       >
         <HeaderProvider>
           <ClerkProvider>
