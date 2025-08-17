@@ -63,7 +63,7 @@ function WizardCheckboxInput<
             onNext={onNext}
             onSubmit={onSubmit}
           />
-          <div className="flex justify-center flex-wrap h-12">
+          <div className="flex justify-center flex-wrap h-12 items-center">
             {checkboxFields?.map((cb) => {
               return (
                 <FormField
