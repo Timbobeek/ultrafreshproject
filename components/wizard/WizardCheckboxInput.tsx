@@ -73,6 +73,7 @@ function WizardCheckboxInput<
                   render={({ field }) => (
                     <FormItem className={cn(" flex", className ?? "")}>
                       <input
+                        id={field.name}
                         className="w-4 h-4 sm:w-5 sm:h-5 mx-1 accent-background"
                         type="checkbox"
                         name={field.name}
