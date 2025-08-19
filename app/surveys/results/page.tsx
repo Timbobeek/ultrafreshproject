@@ -1,7 +1,7 @@
 "use client";
 
 import SingleAccordion from "@/components/SingleAccordion";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useHeader } from "@/context/HeaderContext";
 import axios from "axios";
 
@@ -110,6 +110,18 @@ function getLevels(results: ResultsData): string {
 export default function ResultsPage() {
   const [, setHeader] = useHeader();
   const [data, setData] = useState<MemberResult[]>([]);
+  const [atTop, setAtTop] = useState(true);
+  const [atBottom, setAtBottom] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const handleScroll = () => {
+    if (!containerRef.current) return;
+    const { scrollTop, scrollHeight, clientHeight } = containerRef.current;
+
+    const buffer = 2;
+    setAtTop(scrollTop === 0);
+    setAtBottom(scrollTop + clientHeight >= scrollHeight - buffer);
+  };
 
   useEffect(() => {
     setHeader({
@@ -154,25 +166,45 @@ export default function ResultsPage() {
   }, []);
 
   return (
-    <>
-      {data.map((member, i) => (
-        <SingleAccordion
-          key={i}
-          title={member.name}
-          content={member.answers.map(
-            (person) =>
-              person.label !== "name" && (
-                <div
-                  key={person.label}
-                  className="flex justify-center flex-col md:flex-row items-center md:items-normal my-2 md:my-0"
-                >
-                  <p className="text-background mx-2">{person.label}</p>
-                  <p className=" text-foreground ">{person.data}</p>
-                </div>
-              )
-          )}
-        />
-      ))}
-    </>
+    <div className="relative h-[420px] sm:h-[550px] overflow-hidden flex flex-col">
+      {/* Top gradient */}
+      <div
+        className={`pointer-events-none absolute top-0 left-0 w-full h-8 bg-gradient-to-t from-transparent to-black transition-opacity duration-300 ${
+          atTop ? "opacity-0" : "opacity-100"
+        }`}
+      />
+
+      <main
+        ref={containerRef}
+        className="flex-1 overflow-y-auto scrollbar-none"
+        onScroll={handleScroll}
+      >
+        {data.map((member, i) => (
+          <SingleAccordion
+            key={i}
+            title={member.name}
+            content={member.answers.map(
+              (person) =>
+                person.label !== "name" && (
+                  <div
+                    key={person.label}
+                    className="flex justify-center flex-col md:flex-row items-center md:items-normal my-2 md:my-0"
+                  >
+                    <p className="text-background mx-2">{person.label}</p>
+                    <p className=" text-foreground ">{person.data}</p>
+                  </div>
+                )
+            )}
+          />
+        ))}
+      </main>
+
+      {/* Bottom gradient */}
+      <div
+        className={`pointer-events-none absolute bottom-0 left-0 w-full h-8 bg-gradient-to-t from-black to-transparent transition-opacity duration-300 ${
+          atBottom ? "opacity-0" : "opacity-100"
+        }`}
+      />
+    </div>
   );
 }
