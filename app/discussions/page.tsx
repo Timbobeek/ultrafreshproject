@@ -1,7 +1,7 @@
 "use client";
 
 import Board from "@/components/Board";
-import { useEffect } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useHeader } from "@/context/HeaderContext";
 
 export default function Page() {
@@ -15,6 +15,18 @@ export default function Page() {
       redirect: "/",
     });
   }, []);
+
+  const [atTop, setAtTop] = useState(true);
+  const [atBottom, setAtBottom] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const handleScroll = () => {
+    if (!containerRef.current) return;
+    const { scrollTop, scrollHeight, clientHeight } = containerRef.current;
+
+    setAtTop(scrollTop === 0);
+    setAtBottom(scrollTop + clientHeight >= scrollHeight);
+  };
 
   const homeBoardsContent = [
     {
@@ -74,16 +86,28 @@ export default function Page() {
   ];
 
   return (
-    <div className="relative h-[550px] overflow-hidden flex flex-col ">
-      <div className="pointer-events-none absolute top-0 left-0 w-full h-8 bg-gradient-to-t from-transparent to-white" />
-      <main className="flex-1 overflow-y-auto scrollbar-none">
+    <div className="relative h-[550px] overflow-hidden flex flex-col">
+      {/* Top gradient */}
+      {!atTop && (
+        <div className="pointer-events-none absolute top-0 left-0 w-full h-8 bg-gradient-to-t from-transparent to-white" />
+      )}
+
+      <main
+        ref={containerRef}
+        className="flex-1 overflow-y-auto scrollbar-none"
+        onScroll={handleScroll}
+      >
         <div className="p-4 space-y-4">
           {homeBoardsContent.map((board, i) => (
             <Board key={i} {...board} />
           ))}
         </div>
       </main>
-      <div className="pointer-events-none absolute bottom-0 left-0 w-full h-8 bg-gradient-to-t from-white to-transparent" />
+
+      {/* Bottom gradient */}
+      {!atBottom && (
+        <div className="pointer-events-none absolute bottom-0 left-0 w-full h-8 bg-gradient-to-t from-white to-transparent" />
+      )}
     </div>
   );
 }
