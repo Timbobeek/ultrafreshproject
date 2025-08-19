@@ -108,7 +108,7 @@ export default function Page() {
 
       {/* Bottom gradient */}
       <div
-        className={`pointer-events-none rounded-sm absolute bottom-0 left-0 w-full h-8 bg-gradient-to-t from-black to-transparent transition-opacity duration-300 ${
+        className={`pointer-events-none absolute bottom-0 left-0 w-full h-8 bg-gradient-to-t from-black to-transparent transition-opacity duration-300 ${
           atBottom ? "opacity-0" : "opacity-100"
         }`}
       />

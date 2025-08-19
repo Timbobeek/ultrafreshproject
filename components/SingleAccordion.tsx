@@ -16,7 +16,7 @@ export default function SingleAccordion(props: Props) {
       <Accordion type="single" collapsible>
         <AccordionItem
           value="item-1"
-          className="m-2 overflow-hidden rounded-xl"
+          className="my-2 overflow-hidden rounded-xl"
         >
           <AccordionTrigger className="bg-foreground flex text-background text-2xl border-background data-[state=open]:rounded-b-none rounded-t-xl hover:no-underline">
             {props.title}
