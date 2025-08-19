@@ -86,7 +86,7 @@ export default function Page() {
   ];
 
   return (
-    <div className="relative h-[550px] overflow-hidden flex flex-col">
+    <div className="relative h-[400px] sm:h-[550px] overflow-hidden flex flex-col">
       {/* Top gradient */}
       <div
         className={`pointer-events-none absolute top-0 left-0 w-full h-8 bg-gradient-to-t from-transparent to-black transition-opacity duration-300 ${
