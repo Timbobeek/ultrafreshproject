@@ -88,16 +88,18 @@ export default function Page() {
   return (
     <div className="relative h-[550px] overflow-hidden flex flex-col">
       {/* Top gradient */}
-      {!atTop && (
-        <div className="pointer-events-none absolute top-0 left-0 w-full h-8 bg-gradient-to-t from-transparent to-white" />
-      )}
+      <div
+        className={`pointer-events-none absolute top-0 left-0 w-full h-8 bg-gradient-to-t from-transparent to-black transition-opacity duration-300 ${
+          atTop ? "opacity-0" : "opacity-100"
+        }`}
+      />
 
       <main
         ref={containerRef}
         className="flex-1 overflow-y-auto scrollbar-none"
         onScroll={handleScroll}
       >
-        <div className="p-4 space-y-4">
+        <div className="space-y-4">
           {homeBoardsContent.map((board, i) => (
             <Board key={i} {...board} />
           ))}
@@ -105,9 +107,11 @@ export default function Page() {
       </main>
 
       {/* Bottom gradient */}
-      {!atBottom && (
-        <div className="pointer-events-none absolute bottom-0 left-0 w-full h-8 bg-gradient-to-t from-white to-transparent" />
-      )}
+      <div
+        className={`pointer-events-none rounded-sm absolute bottom-0 left-0 w-full h-8 bg-gradient-to-t from-black to-transparent transition-opacity duration-300 ${
+          atBottom ? "opacity-0" : "opacity-100"
+        }`}
+      />
     </div>
   );
 }

@@ -16,7 +16,7 @@ export default function Board(props: Props) {
     <Link
       href={cn(props.link)}
       className={cn(
-        "flex items-center group justify-center bg-cover bg-start hover-hover:hover:border-foreground hover-hover:hover:bg-finish duration-1000 px-10 h-24 sm:h-36 text-xl sm:text-4xl m-2 rounded-3xl border-8",
+        "flex items-center group justify-center bg-cover bg-start hover-hover:hover:border-foreground hover-hover:hover:bg-finish duration-1000 px-10 h-24 sm:h-36 text-xl sm:text-4xl my-2 rounded-3xl border-8",
         props.text,
         props.image,
         props.borderColor,
