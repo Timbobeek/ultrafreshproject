@@ -32,7 +32,7 @@ export default function Page() {
     {
       title: "kickers",
       text: "text-black",
-      image: "bg-[url('../public/surveyBoards/figo.jpeg')]",
+      image: "bg-[url('../public/surveyBoards/henry.jpg')]",
       borderColor: "border-orange-300",
       backgroundColor: "bg-orange-300/75",
       hover: "",
@@ -50,7 +50,7 @@ export default function Page() {
     {
       title: "injuries",
       text: "text-black",
-      image: "bg-[url('../public/surveyBoards/drogba.webp')]",
+      image: "bg-[url('../public/surveyBoards/bvb.jpeg')]",
       borderColor: "border-lime-300",
       backgroundColor: "bg-lime-300/75",
       hover: "",
