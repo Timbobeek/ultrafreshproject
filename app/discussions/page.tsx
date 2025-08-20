@@ -18,6 +18,7 @@ export default function Page() {
 
   const [atTop, setAtTop] = useState(true);
   const [atBottom, setAtBottom] = useState(false);
+  const [isOverflowing, setIsOverflowing] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
   const handleScroll = () => {
@@ -85,6 +86,12 @@ export default function Page() {
     },
   ];
 
+  useEffect(() => {
+    if (!containerRef.current) return;
+    const { scrollHeight, clientHeight } = containerRef.current;
+    setIsOverflowing(scrollHeight > clientHeight);
+  }, [homeBoardsContent]);
+
   return (
     <div className="relative h-[400px] sm:h-[550px] overflow-hidden flex flex-col">
       {/* Top gradient */}
@@ -106,12 +113,14 @@ export default function Page() {
         </div>
       </main>
 
-      {/* Bottom gradient */}
-      <div
-        className={`pointer-events-none absolute bottom-0 left-0 w-full h-8 bg-gradient-to-t from-black to-transparent transition-opacity duration-300 ${
-          atBottom ? "opacity-0" : "opacity-100"
-        }`}
-      />
+      {/* Bottom gradient (only if overflowing) */}
+      {isOverflowing && (
+        <div
+          className={`pointer-events-none absolute bottom-0 left-0 w-full h-8 bg-gradient-to-t from-black to-transparent transition-opacity duration-300 ${
+            atBottom ? "opacity-0" : "opacity-100"
+          }`}
+        />
+      )}
     </div>
   );
 }
