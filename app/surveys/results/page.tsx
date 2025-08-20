@@ -113,6 +113,14 @@ export default function ResultsPage() {
   const [atTop, setAtTop] = useState(true);
   const [atBottom, setAtBottom] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+  const [isOverflowing, setIsOverflowing] = useState(false);
+
+  useEffect(() => {
+    if (containerRef.current) {
+      const { scrollHeight, clientHeight } = containerRef.current;
+      setIsOverflowing(scrollHeight > clientHeight);
+    }
+  }, [data]);
 
   const handleScroll = () => {
     if (!containerRef.current) return;
@@ -200,11 +208,13 @@ export default function ResultsPage() {
       </main>
 
       {/* Bottom gradient */}
-      <div
-        className={`pointer-events-none absolute bottom-0 left-0 w-full h-8 bg-gradient-to-t from-black to-transparent transition-opacity duration-300 ${
-          atBottom ? "opacity-0" : "opacity-100"
-        }`}
-      />
+      {isOverflowing && (
+        <div
+          className={`pointer-events-none absolute bottom-0 left-0 w-full h-8 bg-gradient-to-t from-black to-transparent transition-opacity duration-300 ${
+            atBottom ? "opacity-0" : "opacity-100"
+          }`}
+        />
+      )}
     </div>
   );
 }

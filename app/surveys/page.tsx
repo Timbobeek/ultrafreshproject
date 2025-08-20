@@ -27,7 +27,7 @@ export default function Page() {
     {
       title: "tba",
       text: "text-black",
-      image: "bg-[url('../public/surveyBoards/henry.jpg')]",
+      image: "bg-[url('../public/surveyBoards/Henrik.jpg')]",
       borderColor: "border-rose-300",
       backgroundColor: "bg-rose-300/75",
       hover: "",
@@ -36,7 +36,7 @@ export default function Page() {
     {
       title: "survey results",
       text: "text-black",
-      image: "bg-[url('../public/surveyBoards/ronaldo.jpg')]",
+      image: "bg-[url('../public/surveyBoards/original.avif')]",
       borderColor: "border-lime-300",
       backgroundColor: "bg-lime-300/75",
       hover: "",

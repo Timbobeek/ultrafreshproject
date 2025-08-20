@@ -19,7 +19,7 @@ export default function Page() {
     {
       title: "tba",
       text: "text-black",
-      image: "bg-[url('../public/surveyBoards/beckham.webp')]",
+      image: "bg-[url('../public/surveyBoards/dvd.webp')]",
       borderColor: "border-orange-300",
       backgroundColor: "bg-orange-300/75",
       hover: "",
@@ -28,7 +28,7 @@ export default function Page() {
     {
       title: "tba",
       text: "text-black",
-      image: "bg-[url('../public/surveyBoards/dempsey.jpg')]",
+      image: "bg-[url('../public/surveyBoards/clint.jpg')]",
       borderColor: "border-rose-300",
       backgroundColor: "bg-rose-300/75",
       hover: "",
@@ -37,7 +37,7 @@ export default function Page() {
     {
       title: "tba",
       text: "text-black",
-      image: "bg-[url('../public/surveyBoards/maradona.webp')]",
+      image: "bg-[url('../public/surveyBoards/diegom.webp')]",
       borderColor: "border-lime-300",
       backgroundColor: "bg-lime-300/75",
       hover: "",

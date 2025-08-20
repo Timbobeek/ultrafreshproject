@@ -64,7 +64,7 @@ export default function Home() {
     {
       title: "quizzes",
       text: "text-black",
-      image: "bg-[url('../public/surveyBoards/khvicha.jpg')]",
+      image: "bg-[url('../public/surveyBoards/kavara.jpg')]",
       borderColor: "border-pink-300",
       backgroundColor: "bg-pink-300/75",
       hover: "",
